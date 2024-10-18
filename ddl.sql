@@ -38,6 +38,27 @@ create table empleados (
     id int primary key auto_increment,
     nombre varchar (50),
     fechaNacimiento datetime,
-    funcion int,
+    idFuncion int,
+    telefono varchar(20),
+    foreign key (funcion) references funciones (id)
+);
 
+create table especies (
+    id int primary key auto_increment,
+    nombre varchar(50) unique
+)
+
+create table alimentos (
+    id int primary key auto_increment,
+    nombre varchar(50)
+)
+
+create table animales (
+    id int primary key auto_increment,
+    idEspecie int,
+    fechaNacimiento datetime,
+    idAlimento int,
+    cantidadAlimento int,
+    foreign key (idEspecie) references especies (id),
+    foreign key (idAlimento) references alimentos (id)
 )
