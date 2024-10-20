@@ -27,13 +27,24 @@ begin
     update compras set total = subtotalTemporal + total where id = new.idCompra;
 end //
 
--- create trigger updateInventarioCosecha
--- after insert on cose
--- for each ROW
--- begin
---     declare subtotalTemporal double;
---     select precio into subtotalTemporal from animales where id = new.idAnimal;
---     update compras set total = subtotalTemporal + total where id = new.idCompra;
--- end //
+create trigger updateInventarioCosecha
+after insert on cosecha
+for each ROW
+begin
+    declare productoCultivado int;
+    select idProducto into productoCultivado from cultivos where id = new.idCultivo;
+    insert into inventarios (idProducto, estado, fechaIngreso, cantidad) VALUES
+    (productoCultivado, "stock", now(), new.cantidad);
+end //
+
+create trigger updateInventarioProduccion
+after insert on produccion
+for each ROW
+begin
+    declare productoProducido int;
+    set productoProducido = new.idProducto;
+    insert into inventarios (idProducto, estado, fechaIngreso, cantidad) VALUES
+    (productoProducido, "stock", now(), new.cantidad);
+end //
 
 DELIMITER ;

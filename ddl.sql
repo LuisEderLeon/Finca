@@ -17,6 +17,13 @@ create table productos (
     foreign key (idTipo) references tiposProducto (id)
 );
 
+create table cultivos (
+    id int primary key auto_increment,
+    idProducto int,
+    area double,
+    foreign key (idProducto) references productos (id)
+);
+
 create table inventarios (
     id int primary key auto_increment,
     idProducto int,
@@ -73,6 +80,8 @@ create table animales (
     foreign key (idAlimento) references alimentos (id)
 );
 
+-----------------------------------------------------------------------------------
+
 CREATE TABLE proveedores (
     id INT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(50) NOT NULL,  
@@ -113,6 +122,8 @@ CREATE TABLE compraMaquinaria (
     FOREIGN KEY (idMaquinaria) REFERENCES maquinarias(id)
 );
 
+-----------------------------------------------------------------------------------
+
 CREATE TABLE produccion (
     id INT AUTO_INCREMENT PRIMARY KEY,  
     idAnimal INT,
@@ -120,7 +131,6 @@ CREATE TABLE produccion (
     idEmpleado int,
     idMaquinaria int,
     cantidad INT,
-    unidad enum("kilogramos","litros","unidades"),
     FOREIGN KEY (idProducto) REFERENCES productos(id), 
     FOREIGN KEY (idEmpleado) REFERENCES empleados(id),
     FOREIGN KEY (idAnimal) REFERENCES animales(id),
@@ -129,11 +139,11 @@ CREATE TABLE produccion (
 
 CREATE TABLE cosecha (
     id INT AUTO_INCREMENT PRIMARY KEY,  
-    idProducto INT,
+    idCultivo INT,
     idEmpleado int,
     idMaquinaria int,
     cantidad INT,
-    FOREIGN KEY (idProducto) REFERENCES productos(id), 
+    FOREIGN KEY (idCultivo) REFERENCES cultivos(id), 
     FOREIGN KEY (idEmpleado) REFERENCES empleados(id),
     FOREIGN KEY (idMaquinaria) REFERENCES maquinarias(id)
 );
