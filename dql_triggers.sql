@@ -36,13 +36,18 @@ AFTER INSERT ON cosecha
 FOR EACH ROW
 BEGIN
     DECLARE productoCultivado INT;
+    DECLARE existeVenta INT;
     declare estadoProducto varchar(50);
+
     SELECT idProducto INTO productoCultivado FROM cultivos WHERE id = new.idCultivo;
-    if (select * from inventarios where idProducto = productoCultivado and estado = "venta") is null then
+    select count(*) into existeVenta from inventarios where idProducto = productoCultivado and estado = "venta";
+
+    if existeVenta = 0 then
         set estadoProducto = "venta";
     else
         set estadoProducto = "stock";
     end if;
+
     insert into inventarios (idProducto, estado, fechaIngreso, cantidad) values
     (productoCultivado, estadoProducto, now(), new.cantidad);
 END //
@@ -53,15 +58,18 @@ AFTER INSERT ON produccion
 FOR EACH ROW
 BEGIN
     DECLARE productoProducido INT;
+    DECLARE existeVenta INT;
     declare estadoProducto varchar(50);
+    
     set productoProducido = new.idProducto;
-    if (select * from inventarios where idProducto = productoProducido and estado = "venta") is null then
+    select count(*) into existeVenta from inventarios where idProducto = productoProducido and estado = "venta";
+    if existeVenta = 0 then
         set estadoProducto = "venta";
     else
         set estadoProducto = "stock";
     end if;
     insert into inventarios (idProducto, estado, fechaIngreso, cantidad) values
-    (productoProducido, "stock", now(), new.cantidad);
+    (productoProducido, estadoProducto, now(), new.cantidad);
 END //
 
 -- 6
@@ -115,7 +123,7 @@ FOR EACH ROW
 BEGIN
     declare precioProducto double;
     select precio into precioProducto from productos where id = new.idProducto;
-    set old.subtotal = new.cantidad * precioProducto;
+    set new.subtotal = new.cantidad * precioProducto;
 END //
 
 CREATE TRIGGER actualizarTotalVenta
