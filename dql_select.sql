@@ -10,8 +10,11 @@ select alimentos.id, alimentos.nombre, especies.nombre from alimentos
 LEFT JOIN animales on animales.idAlimento = alimentos.id
 LEFT JOIN especies on especies.id = animales.idEspecie;
 
-SELECT * from inventarios;
+SELECT * from alimentos;
 
 SELECT * FROM empleados
 JOIN funciones ON funciones.id = empleados.idFuncion
 WHERE funciones.nombre = "Gestión de animales";
+
+select * from cosecha;
+

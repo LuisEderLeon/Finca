@@ -1,5 +1,5 @@
 DELIMITER //
-
+-- 1
 CREATE TRIGGER subtotalCompraAlimentos
 BEFORE INSERT ON compraAlimentos
 FOR EACH ROW
@@ -8,6 +8,8 @@ BEGIN
     SELECT alimentos.precio INTO precioAlimento FROM alimentos WHERE id = new.idAlimento;
     SET new.subtotal = precioAlimento * new.cantidad;
 END //
+
+-- 2
 
 CREATE TRIGGER totalComprasAlimentos
 AFTER INSERT ON compraAlimentos
@@ -18,6 +20,7 @@ BEGIN
     UPDATE compras SET total = subtotalTemporal + total WHERE id = new.idCompra;
 END //
 
+-- 3
 CREATE TRIGGER totalComprasAnimales
 AFTER INSERT ON compraAnimales
 FOR EACH ROW
@@ -27,6 +30,7 @@ BEGIN
     UPDATE compras SET total = subtotalTemporal + total WHERE id = new.idCompra;
 END //
 
+-- 4
 CREATE TRIGGER updateInventarioCosecha
 AFTER INSERT ON cosecha
 FOR EACH ROW
@@ -44,6 +48,7 @@ BEGIN
         update inventarios set fechaIngreso = now() where inventarios.idProducto = productoCultivado and estado="venta";
 END //
 
+-- 5
 CREATE TRIGGER updateInventarioProduccion
 AFTER INSERT ON produccion
 FOR EACH ROW
@@ -61,6 +66,7 @@ BEGIN
         update inventarios set fechaIngreso = now() where inventarios.idProducto = productoProducido and estado="venta";
 END //
 
+-- 6
 CREATE TRIGGER ajustarStockAlimentos
 AFTER INSERT ON compraAlimentos
 FOR EACH ROW
@@ -68,6 +74,7 @@ BEGIN
     UPDATE alimentos SET stock = stock + new.cantidad WHERE id = new.idCompra;
 END //
 
+-- 7
 CREATE TRIGGER comprobarStockVenta
 BEFORE INSERT ON detallesVenta
 FOR EACH ROW
@@ -79,6 +86,7 @@ BEGIN
     END IF;
 END //
 
+-- 8
 CREATE TRIGGER ajustarStockInventarioVenta
 AFTER INSERT ON detallesVenta
 FOR EACH ROW
@@ -86,6 +94,25 @@ BEGIN
     UPDATE inventarios
     SET inventarios.cantidad = inventarios.cantidad - NEW.cantidad
     WHERE idProducto = NEW.idProducto AND estado = "stock";
+    
+    
 END //
 
+-- 9
+DELIMITER //
+CREATE TRIGGER aumentarComidaAnimalesEnfermos
+AFTER UPDATE ON animales
+FOR EACH ROW
+BEGIN
+    IF NEW.estadoSalud = "muerto" THEN
+        UPDATE animales
+        SET cantidadAlimento = 0
+        WHERE animales.id = new.id;
+    END IF;
+    IF NEW.estadoSalud = "enfermo" THEN
+        UPDATE animales
+        SET cantidadAlimento = cantidadAlimento + 10
+        WHERE animales.id = new.id;
+    END IF;
+END //
 DELIMITER ;
