@@ -27,13 +27,13 @@ begin
     update compras set total = subtotalTemporal + total where id = new.idCompra;
 end //
 
-create trigger updateInventarioCosecha
-after insert on     
-for each ROW
-begin
-    declare subtotalTemporal double;
-    select precio into subtotalTemporal from animales where id = new.idAnimal;
-    update compras set total = subtotalTemporal + total where id = new.idCompra;
-end //
+-- create trigger updateInventarioCosecha
+-- after insert on cose
+-- for each ROW
+-- begin
+--     declare subtotalTemporal double;
+--     select precio into subtotalTemporal from animales where id = new.idAnimal;
+--     update compras set total = subtotalTemporal + total where id = new.idCompra;
+-- end //
 
 DELIMITER ;

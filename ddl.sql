@@ -51,7 +51,7 @@ create table empleados (
 
 create table especies (
     id int primary key auto_increment,
-    nombre varchar(15) unique
+    nombre varchar(30) unique
 );
 
 CREATE TABLE alimentos (
