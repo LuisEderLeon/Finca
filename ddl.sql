@@ -25,11 +25,11 @@ create table cultivos (
 );
 
 create table inventarios (
-    id int primary key auto_increment,
     idProducto int,
     estado enum("stock","venta"),
     fechaIngreso datetime,
     cantidad double,
+    PRIMARY KEY(idProducto,estado),
     foreign key (idProducto) references productos (id)
 );
 

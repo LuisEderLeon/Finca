@@ -1,50 +1,91 @@
 DELIMITER //
 
 CREATE TRIGGER subtotalCompraAlimentos
-before INSERT ON compraAlimentos
+BEFORE INSERT ON compraAlimentos
 FOR EACH ROW
 BEGIN
-    declare precioAlimento double;
-    select alimentos.precio into precioAlimento from alimentos where id = new.idAlimento;
-    set new.subtotal = precioAlimento * new.cantidad;
+    DECLARE precioAlimento DOUBLE;
+    SELECT alimentos.precio INTO precioAlimento FROM alimentos WHERE id = new.idAlimento;
+    SET new.subtotal = precioAlimento * new.cantidad;
 END //
 
-create trigger totalComprasAlimentos
-after insert on compraAlimentos
-for each ROW
-begin
-    declare subtotalTemporal double;
-    select subtotal into subtotalTemporal from compraAlimentos where idCompra = new.idCompra and idAlimento = new.idAlimento;
-    update compras set total = subtotalTemporal + total where id = new.idCompra;
-end //
+CREATE TRIGGER totalComprasAlimentos
+AFTER INSERT ON compraAlimentos
+FOR EACH ROW
+BEGIN
+    DECLARE subtotalTemporal DOUBLE;
+    SELECT subtotal INTO subtotalTemporal FROM compraAlimentos WHERE idCompra = new.idCompra AND idAlimento = new.idAlimento;
+    UPDATE compras SET total = subtotalTemporal + total WHERE id = new.idCompra;
+END //
 
-create trigger totalComprasAnimales
-after insert on compraAnimales
-for each ROW
-begin
-    declare subtotalTemporal double;
-    select precio into subtotalTemporal from animales where id = new.idAnimal;
-    update compras set total = subtotalTemporal + total where id = new.idCompra;
-end //
+CREATE TRIGGER totalComprasAnimales
+AFTER INSERT ON compraAnimales
+FOR EACH ROW
+BEGIN
+    DECLARE subtotalTemporal DOUBLE;
+    SELECT precio INTO subtotalTemporal FROM animales WHERE id = new.idAnimal;
+    UPDATE compras SET total = subtotalTemporal + total WHERE id = new.idCompra;
+END //
 
-create trigger updateInventarioCosecha
-after insert on cosecha
-for each ROW
-begin
-    declare productoCultivado int;
-    select idProducto into productoCultivado from cultivos where id = new.idCultivo;
-    insert into inventarios (idProducto, estado, fechaIngreso, cantidad) VALUES
-    (productoCultivado, "stock", now(), new.cantidad);
-end //
+CREATE TRIGGER updateInventarioCosecha
+AFTER INSERT ON cosecha
+FOR EACH ROW
+BEGIN
+    DECLARE productoCultivado INT;
+    DECLARE cantidadStock int;
+    DECLARE cantidadVenta int;
+    SELECT idProducto INTO productoCultivado FROM cultivos WHERE id = new.idCultivo;
+    set cantidadStock = floor(new.cantidad / 3);
+    set cantidadVenta = new.cantidad - cantidadStock;
+    update inventarios set cantidad = cantidad + cantidadStock where inventarios.idProducto = productoCultivado and estado="stock";
+        update inventarios set fechaIngreso = now() where inventarios.idProducto = productoCultivado and estado="stock";
 
-create trigger updateInventarioProduccion
-after insert on produccion
-for each ROW
-begin
-    declare productoProducido int;
-    set productoProducido = new.idProducto;
-    insert into inventarios (idProducto, estado, fechaIngreso, cantidad) VALUES
-    (productoProducido, "stock", now(), new.cantidad);
-end //
+    update inventarios set cantidad = cantidad + cantidadVenta where inventarios.idProducto = productoCultivado and estado="venta";
+        update inventarios set fechaIngreso = now() where inventarios.idProducto = productoCultivado and estado="venta";
+END //
+
+CREATE TRIGGER updateInventarioProduccion
+AFTER INSERT ON produccion
+FOR EACH ROW
+BEGIN
+    DECLARE productoProducido INT;
+    DECLARE cantidadStock int;
+    DECLARE cantidadVenta int;
+    SET productoProducido = new.idProducto;
+    set cantidadStock = floor(new.cantidad / 3);
+    set cantidadVenta = new.cantidad - cantidadStock;
+    update inventarios set cantidad = cantidad + cantidadStock where inventarios.idProducto = productoProducido and estado="stock";
+        update inventarios set fechaIngreso = now() where inventarios.idProducto = productoProducido and estado="stock";
+
+    update inventarios set cantidad = cantidad + cantidadVenta where inventarios.idProducto = productoProducido and estado="venta";
+        update inventarios set fechaIngreso = now() where inventarios.idProducto = productoProducido and estado="venta";
+END //
+
+CREATE TRIGGER ajustarStockAlimentos
+AFTER INSERT ON compraAlimentos
+FOR EACH ROW
+BEGIN
+    UPDATE alimentos SET stock = stock + new.cantidad WHERE id = new.idCompra;
+END //
+
+CREATE TRIGGER comprobarStockVenta
+BEFORE INSERT ON detallesVenta
+FOR EACH ROW
+BEGIN
+    DECLARE stockDisponible INT;
+    SELECT inventarios.cantidad INTO stockDisponible FROM inventarios WHERE inventarios.idProducto = new.idProducto;
+    IF stockDisponible < NEW.cantidad THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No hay suficiente stock para la venta';
+    END IF;
+END //
+
+CREATE TRIGGER ajustarStockInventarioVenta
+AFTER INSERT ON detallesVenta
+FOR EACH ROW
+BEGIN
+    UPDATE inventarios
+    SET inventarios.cantidad = inventarios.cantidad - NEW.cantidad
+    WHERE idProducto = NEW.idProducto AND estado = "stock";
+END //
 
 DELIMITER ;
