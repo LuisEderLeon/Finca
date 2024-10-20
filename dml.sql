@@ -63,105 +63,6 @@ INSERT INTO productos (nombre, precio, idTipo, unidades) VALUES
 ('Cafe', 15.00, 1, 'kilogramos')
 ;
 
-insert into inventarios(idProducto,estado,fechaIngreso,cantidad) VALUES
-(1  ,"stock",null,0),
-(2  ,"stock",null,0),
-(3  ,"stock",null,0),
-(4  ,"stock",null,0),
-(5  ,"stock",null,0),
-(6  ,"stock",null,0),
-(7  ,"stock",null,0),
-(8  ,"stock",null,0),
-(9  ,"stock",null,0),
-(10 ,"stock",null,0),
-(11 ,"stock",null,0),
-(12 ,"stock",null,0),
-(13 ,"stock",null,0),
-(14 ,"stock",null,0),
-(15 ,"stock",null,0),
-(16 ,"stock",null,0),
-(17 ,"stock",null,0),
-(18 ,"stock",null,0),
-(19 ,"stock",null,0),
-(20 ,"stock",null,0),
-(21 ,"stock",null,0),
-(22 ,"stock",null,0),
-(23 ,"stock",null,0),
-(24 ,"stock",null,0),
-(25 ,"stock",null,0),
-(26 ,"stock",null,0),
-(27 ,"stock",null,0),
-(28 ,"stock",null,0),
-(29 ,"stock",null,0),
-(30 ,"stock",null,0),
-(31 ,"stock",null,0),
-(32 ,"stock",null,0),
-(33 ,"stock",null,0),
-(34 ,"stock",null,0),
-(35 ,"stock",null,0),
-(36 ,"stock",null,0),
-(37 ,"stock",null,0),
-(38 ,"stock",null,0),
-(39 ,"stock",null,0),
-(40 ,"stock",null,0),
-(41 ,"stock",null,0),
-(42 ,"stock",null,0),
-(43 ,"stock",null,0),
-(44 ,"stock",null,0),
-(45 ,"stock",null,0),
-(46 ,"stock",null,0),
-(47 ,"stock",null,0),
-(48 ,"stock",null,0),
--- venta
-(1  ,"venta",null,0),
-(2  ,"venta",null,0),
-(3  ,"venta",null,0),
-(4  ,"venta",null,0),
-(5  ,"venta",null,0),
-(6  ,"venta",null,0),
-(7  ,"venta",null,0),
-(8  ,"venta",null,0),
-(9  ,"venta",null,0),
-(10 ,"venta",null,0),
-(11 ,"venta",null,0),
-(12 ,"venta",null,0),
-(13 ,"venta",null,0),
-(14 ,"venta",null,0),
-(15 ,"venta",null,0),
-(16 ,"venta",null,0),
-(17 ,"venta",null,0),
-(18 ,"venta",null,0),
-(19 ,"venta",null,0),
-(20 ,"venta",null,0),
-(21 ,"venta",null,0),
-(22 ,"venta",null,0),
-(23 ,"venta",null,0),
-(24 ,"venta",null,0),
-(25 ,"venta",null,0),
-(26 ,"venta",null,0),
-(27 ,"venta",null,0),
-(28 ,"venta",null,0),
-(29 ,"venta",null,0),
-(30 ,"venta",null,0),
-(31 ,"venta",null,0),
-(32 ,"venta",null,0),
-(33 ,"venta",null,0),
-(34 ,"venta",null,0),
-(35 ,"venta",null,0),
-(36 ,"venta",null,0),
-(37 ,"venta",null,0),
-(38 ,"venta",null,0),
-(39 ,"venta",null,0),
-(40 ,"venta",null,0),
-(41 ,"venta",null,0),
-(42 ,"venta",null,0),
-(43 ,"venta",null,0),
-(44 ,"venta",null,0),
-(45 ,"venta",null,0),
-(46 ,"venta",null,0),
-(47 ,"venta",null,0),
-(48 ,"venta",null,0);
-
 INSERT INTO especies (nombre) VALUES
 ('Vaca'),
 ('Oveja'),
@@ -204,6 +105,59 @@ INSERT INTO alimentos (nombre, precio, stock) VALUES
 ('Trozos de carne', 35.00, 30),
 ('Harina de hueso', 20.00, 50),
 ('Miel para abejas', 50.00, 20);
+
+INSERT INTO especieAlimento (idEspecie, idAlimento) VALUES
+(1, 1),  -- Vaca - Pasto
+(1, 2),  -- Vaca - Heno
+(1, 4),  -- Vaca - Maíz
+(1, 13), -- Vaca - Soja
+(1, 15), -- Vaca - Salvado
+
+(2, 1),  -- Oveja - Pasto
+(2, 2),  -- Oveja - Heno
+(2, 9),  -- Oveja - Alfalfa
+(2, 13), -- Oveja - Soja
+(2, 14), -- Oveja - Cebada
+
+(3, 1),  -- Cabra - Pasto
+(3, 2),  -- Cabra - Heno
+(3, 4),  -- Cabra - Maíz
+(3, 9),  -- Cabra - Alfalfa
+(3, 16), -- Cabra - Melaza
+
+(4, 3),  -- Pollo - Granos
+(4, 5),  -- Pollo - Avena
+(4, 11), -- Pollo - Peces pequeños
+(4, 12), -- Pollo - Insectos
+(4, 19), -- Pollo - Piensos compuestos
+
+(5, 3),  -- Cerdo - Granos
+(5, 4),  -- Cerdo - Maíz
+(5, 24), -- Cerdo - Remolacha
+(5, 27), -- Cerdo - Trozos de carne
+(5, 15), -- Cerdo - Salvado
+
+(6, 6),  -- Colmena de abejas - Néctar
+(6, 30), -- Colmena de abejas - Miel para abejas
+
+(7, 1),  -- Pato - Pasto
+(7, 11), -- Pato - Peces pequeños
+(7, 19), -- Pato - Piensos compuestos
+(7, 12), -- Pato - Insectos
+(7, 9),  -- Pato - Alfalfa
+
+(8, 7),  -- Conejo - Frutas
+(8, 8),  -- Conejo - Verduras
+(8, 9),  -- Conejo - Alfalfa
+(8, 18), -- Conejo - Hierbas frescas
+(8, 10), -- Conejo - Zanahorias
+
+(9, 1),  -- Caballo - Pasto
+(9, 2),  -- Caballo - Heno
+(9, 5),  -- Caballo - Avena
+(9, 16), -- Caballo - Melaza
+(9, 14); -- Caballo - Cebada
+
 
 INSERT INTO animales (idEspecie, fechaNacimiento, idAlimento, precio, cantidadAlimento, estadoSalud) VALUES
 (1, '2020-03-15', 1, 150.00, 10, 'saludable'),
@@ -724,5 +678,3 @@ INSERT INTO cosecha (idCultivo, idEmpleado, idMaquinaria, cantidad) VALUES
 (4, 8, 9, 135),
 (5, 9, 10, 155),
 (6, 10, 1, 170);
-
--- Error Code: 1452. Cannot add or update a child row: a foreign key constraint fails (`mifinca`.`cosecha`, CONSTRAINT `cosecha_ibfk_1` FOREIGN KEY (`idCultivo`) REFERENCES `cultivos` (`id`))

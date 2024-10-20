@@ -25,11 +25,11 @@ create table cultivos (
 );
 
 create table inventarios (
+    id int primary key auto_increment,
     idProducto int,
     estado enum("stock","venta"),
     fechaIngreso datetime,
-    cantidad double,
-    PRIMARY KEY(idProducto,estado),
+    cantidad int,
     foreign key (idProducto) references productos (id)
 );
 
@@ -68,16 +68,21 @@ CREATE TABLE alimentos (
     stock INT
 );  
 
+CREATE TABLE especieAlimento (
+    idEspecie int,
+    idAlimento int,
+    foreign key (idEspecie) references especies (id),
+    foreign key (idAlimento) references alimentos (id)
+);
+
 create table animales (
     id int primary key auto_increment,
     idEspecie int,
     fechaNacimiento datetime,
-    idAlimento int,
     precio double,
     cantidadAlimento int,
     estadoSalud enum("saludable","enfermo","muerto"),
-    foreign key (idEspecie) references especies (id),
-    foreign key (idAlimento) references alimentos (id)
+    foreign key (idEspecie) references especies (id)
 );
 
 -----------------------------------------------------------------------------------
@@ -174,3 +179,10 @@ CREATE TABLE detallesVenta (
     FOREIGN KEY (idVenta) REFERENCES ventas(id),
     FOREIGN KEY (idProducto) REFERENCES productos(id)
 );
+
+create table registros (
+    id int primary key auto_increment,
+    fechaRegistro datetime,
+    mensaje varchar(50)
+);
+
