@@ -58,19 +58,19 @@ FOR EACH ROW
 BEGIN
     DECLARE productoCultivado INT;
     DECLARE existeVenta INT;
-    declare estadoProducto varchar(50);
+    DECLARE estadoProducto VARCHAR(50);
 
-    SELECT productoEnParcela(new.idParcela) INTO productoCultivado;
-    select existenProductosAVender(productoCultivado) into existeVenta;
+    SELECT PRODUCTOENPARCELA(new.idParcela) INTO productoCultivado;
+    SELECT EXISTENPRODUCTOSAVENDER(productoCultivado) INTO existeVenta;
 
-    if existeVenta = 0 then
-        set estadoProducto = "venta";
-    else
-        set estadoProducto = "stock";
-    end if;
+    IF existeVenta = 0 THEN
+        SET estadoProducto = "venta";
+    ELSE
+        SET estadoProducto = "stock";
+    END IF;
 
-    insert into inventarios (idProducto, estado, fechaIngreso, cantidad) values
-    (productoCultivado, estadoProducto, now(), new.cantidad);
+    INSERT INTO inventarios (idProducto, estado, fechaIngreso, cantidad) VALUES
+    (productoCultivado, estadoProducto, NOW(), new.cantidad);
 END //
 
 -- 7
@@ -80,17 +80,17 @@ FOR EACH ROW
 BEGIN
     DECLARE productoProducido INT;
     DECLARE existeVenta INT;
-    declare estadoProducto varchar(50);
+    DECLARE estadoProducto VARCHAR(50);
     
-    set productoProducido = new.idProducto;
-    select existenProductosAVender(productoProducido) into existeVenta;
-    if existeVenta = 0 then
-        set estadoProducto = "venta";
-    else
-        set estadoProducto = "stock";
-    end if;
-    insert into inventarios (idProducto, estado, fechaIngreso, cantidad) values
-    (productoProducido, estadoProducto, now(), new.cantidad);
+    SET productoProducido = new.idProducto;
+    SELECT EXISTENPRODUCTOSAVENDER(productoProducido) INTO existeVenta;
+    IF existeVenta = 0 THEN
+        SET estadoProducto = "venta";
+    ELSE
+        SET estadoProducto = "stock";
+    END IF;
+    INSERT INTO inventarios (idProducto, estado, fechaIngreso, cantidad) VALUES
+    (productoProducido, estadoProducto, NOW(), new.cantidad);
 END //
 
 -- 8
@@ -111,52 +111,52 @@ END //
 
 -- 10
 CREATE TRIGGER comprobarStockVenta
-before INSERT ON detallesVenta
+BEFORE INSERT ON detallesVenta
 FOR EACH ROW
 BEGIN
     DECLARE stockDisponible INT;
-    declare stockARestar int;
+    DECLARE stockARestar INT;
     
-    set stockARestar = new.cantidad;
+    SET stockARestar = new.cantidad;
 
-    SELECT stockALaVenta(new.idProducto) INTO stockDisponible;
+    SELECT STOCKALAVENTA(new.idProducto) INTO stockDisponible;
     
-    while stockDisponible < stockARestar do
-        set stockARestar = stockARestar - stockDisponible;
-        delete from inventarios where estado = "venta" and idProducto = new.idProducto;
-        update inventarios set estado = "venta" where idProducto = new.idProducto 
-        order by fechaIngreso limit 1;
-        SELECT stockALaVenta(new.idProducto) INTO stockDisponible;
-    END while;
+    WHILE stockDisponible < stockARestar DO
+        SET stockARestar = stockARestar - stockDisponible;
+        DELETE FROM inventarios WHERE estado = "venta" AND idProducto = new.idProducto;
+        UPDATE inventarios SET estado = "venta" WHERE idProducto = new.idProducto 
+        ORDER BY fechaIngreso LIMIT 1;
+        SELECT STOCKALAVENTA(new.idProducto) INTO stockDisponible;
+    END WHILE;
 
-    if stockDisponible is null THEN
-        set new.cantidad = new.cantidad - stockARestar;
-        insert into registros (fechaRegistro, mensaje) values
-        (now(), concat("No habian suficientes productos con id ",new.idProducto," para la venta ",new.idVenta));
-    else 
-        update inventarios set cantidad = cantidad - stockARestar 
-        where estado = "venta" and idProducto = new.idProducto;
-    end if;
+    IF stockDisponible IS NULL THEN
+        SET new.cantidad = new.cantidad - stockARestar;
+        INSERT INTO registros (fechaRegistro, mensaje) VALUES
+        (NOW(), CONCAT("No habian suficientes productos con id ",new.idProducto," para la venta ",new.idVenta));
+    ELSE 
+        UPDATE inventarios SET cantidad = cantidad - stockARestar 
+        WHERE estado = "venta" AND idProducto = new.idProducto;
+    END IF;
 END //
 
 -- 11
 CREATE TRIGGER actualizarSubtotalVentas
-before INSERT ON detallesVenta
+BEFORE INSERT ON detallesVenta
 FOR EACH ROW
 BEGIN
-    declare precioProducto double;
-    select precio into precioProducto from productos where id = new.idProducto;
-    set new.subtotal = new.cantidad * precioProducto;
+    DECLARE precioProducto DOUBLE;
+    SELECT precio INTO precioProducto FROM productos WHERE id = new.idProducto;
+    SET new.subtotal = new.cantidad * precioProducto;
 END //
 
 -- 12
 CREATE TRIGGER actualizarTotalVenta
-after INSERT ON detallesVenta
+AFTER INSERT ON detallesVenta
 FOR EACH ROW
 BEGIN
-    declare subtotalProducto double;
-    select detallesVenta.subtotal into subtotalProducto from detallesVenta where detallesVenta.idProducto = new.idProducto and detallesVenta.idVenta = new.idVenta;
-    update ventas set total = total + subtotalProducto where id = new.idVenta;
+    DECLARE subtotalProducto DOUBLE;
+    SELECT detallesVenta.subtotal INTO subtotalProducto FROM detallesVenta WHERE detallesVenta.idProducto = new.idProducto AND detallesVenta.idVenta = new.idVenta;
+    UPDATE ventas SET total = total + subtotalProducto WHERE id = new.idVenta;
 END //
 
 -- 13
@@ -177,3 +177,4 @@ BEGIN
 END //
 
 DELIMITER ;
+

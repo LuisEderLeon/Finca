@@ -1,38 +1,63 @@
 -- 1
 SELECT produccion.id, especies.nombre as especie, productos.nombre as producto, empleados.nombre as empleado, funciones.nombre  as funcion, concat(maquinarias.marca, " ", maquinarias.modelo) as maquinaria FROM produccion 
-JOIN animales ON animales.id = produccion.idAnimal
-JOIN especies ON especies.id = animales.idEspecie
-JOIN productos ON productos.id = produccion.idProducto
-JOIN empleados ON empleados.id = produccion.idEmpleado
-JOIN funciones ON funciones.id = empleados.idFuncion
-JOIN maquinarias ON maquinarias.id = produccion.idMaquinaria;
+JOIN animales on animales.id = produccion.idAnimal
+JOIN especies on especies.id = animales.idEspecie
+JOIN productos on productos.id = produccion.idProducto
+JOIN empleados on empleados.id = produccion.idEmpleado
+JOIN funciones on funciones.id = empleados.idFuncion
+JOIN maquinarias on maquinarias.id = produccion.idMaquinaria;
 
 -- 2
-select alimentos.id, alimentos.nombre, especies.nombre from alimentos
-LEFT JOIN animales on animales.idAlimento = alimentos.id
-LEFT JOIN especies on especies.id = animales.idEspecie;
 
 -- 3
-SELECT * from alimentos;
+SELECT * FROM alimentos;
 
 -- 4
 SELECT * FROM empleados
-JOIN funciones ON funciones.id = empleados.idFuncion
+JOIN funciones on funciones.id = empleados.idFuncion
 WHERE funciones.nombre = "Gestión de animales";
 
 -- 5
-select * from cosecha;
+SELECT * FROM cosecha;
 
-insert into ventas(fecha,idCliente,total) values
+insert into ventas(fecha,idCliente,idEmpleado,total) values
 (curdate(),1,0);
 
-insert into detallesventa (idVenta,idProducto,cantidad,subtotal) VALUES
-(1,1,500,50);
-select * from cosecha;
-SELECT * FROM compraalimentos;
-select * from alimentos;
-select * from productos;
-select * from detallesventa;
+call crearVentaNueva(1,1);
 
-select * from compras;
-select * from compramaquinaria;
+call añadirProductosVenta(1,3,50);
+
+insert into detallesVenta (idVenta,idProducto,cantidad,subtotal) vAlues
+(1,3,50,50);
+SELECT * FROM inventarios;
+
+SELECT * FROM cosecha;
+SELECT * FROM compraAlimentos;
+SELECT * FROM alertas;
+SELECT * FROM ventas;
+SELECT * FROM detallesVenta;
+
+insert into alertas (fecha, mensaje)
+    select now(), concat("Recordatorio: realizar mantenimiento de ", Maq.marca, " ", Maq.modelo," id: ",Maq.id) 
+    from maquinarias Maq
+    where datediff(now(),(select max(mantenimiento.fechaFin) from mantenimiento where mantenimiento.fechaFin < now() and mantenimiento.iDMaquinaria = Maq.id)) >= 100;
+
+SELECT fechaUltimaReparacionMaquinaria(1);
+-- consulta
+SELECT compras.*, group_concat(distinct compraAlimentos.subtotal separator "\n") as alimentos, group_concat(distinct compraMaquinaria.subtotal separator "\n") as maquinaria, group_concat(distinct animales.precio separator "\n") as animales FROM compras 
+LEFT JOIN compraAlimentos on compras.id = compraAlimentos.idCompra
+LEFT JOIN compraMaquinaria on compras.id = compraMaquinaria.idCompra
+LEFT JOIN compraAnimales on compras.id = compraAnimales.idCompra
+LEFT JOIN animales on compraAnimales.idAnimal = animales.id
+group by compras.id;
+
+SELECT * FROM compramaquinaria;
+SELECT * FROM alimentos;
+SELECT * FROM alertas;
+
+-- no quitar --------------------------------------------------
+SELECT NOW(), cOncat('bajo stock de ', productos.nombre) 
+    FROM productos
+    WHERE productos.id IN (SELECT idProducto FROM inventarios WHERE estado = 'stock' AND cantidad <= 10);
+    
+SELECT mAx(mantenimiento.fechaFin) FROM mantenimiento WHERE mantenimiento.fechaFin < NOW() AND mantenimiento.idMaquinaria = 1;-- 

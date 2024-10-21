@@ -39,7 +39,7 @@ CREATE TABLE maquinarias (
     id INT PRIMARY KEY auto_increment,
     marca varchar(50),
     modelo varchar(50),
-    estado enum("stock","uso"),
+    estado enum("stock","uso","mantenimiento"),
     cantidad int,
     precio DOUBLE,
     fechaCompra datetime
@@ -170,6 +170,16 @@ CREATE TABLE cosecha (
     FOREIGN KEY (idMaquinaria) REFERENCES maquinarias(id)
 );
 
+create table mantenimiento (
+    id int auto_increment primary key,
+    idEmpleado int,
+    idMaquinaria int,
+    fechaInicio datetime,
+    fechaFin datetime,
+    FOREIGN key (idEmpleado) REFERENCES empleados(id),
+    FOREIGN key (idMaquinaria) REFERENCES maquinarias(id)
+);
+
 -----------------------------------------------------------------------------------
 
 CREATE TABLE clientes(
@@ -183,8 +193,10 @@ CREATE TABLE ventas (
     id INT PRIMARY KEY AUTO_INCREMENT,
     fecha DATE NOT NULL,
     idCliente INT NOT NULL,
+    idEmpleado INT NOT NULL,
     total DOUBLE,
-    FOREIGN KEY (idCliente) REFERENCES clientes(id)
+    FOREIGN KEY (idCliente) REFERENCES clientes(id),
+    FOREIGN KEY (idEmpleado) REFERENCES empleados(id)
 );
 
 CREATE TABLE detallesVenta (
@@ -200,12 +212,12 @@ CREATE TABLE detallesVenta (
 CREATE TABLE registros (
     id INT PRIMARY KEY auto_increment,
     fechaRegistro DATETIME,
-    mensaje varchar(50)
+    mensaje varchar(500)
 );
 
 
 CREATE TABLE alertas (
     id int primary key auto_increment,
-    mensaje varchar(100),
-    fecha datetime
-)
+    fecha datetime,
+    mensaje varchar(500)
+);
