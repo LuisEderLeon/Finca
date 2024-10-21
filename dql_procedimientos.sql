@@ -69,10 +69,10 @@ begin
     
     IF productoACultivar IS NULL THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Esta parcela no existe';
-        insert into registros (fechaRegistro, mensaje) values (now(), "Se intento acceder a una parcela que no existe")
+        insert into registros (fechaRegistro, mensaje) values (now(), "Se intento acceder a una parcela que no existe");
     ELSEIF productoACultivar <> 0 THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Esta parcela no está vacía';
-        insert into registros (fechaRegistro, mensaje) values (now(), "Se intento cultivar una parcela que no esta vacia")
+        insert into registros (fechaRegistro, mensaje) values (now(), "Se intento cultivar una parcela que no esta vacia");
     ELSE
         update parcelas set idProducto =  producto, cantidad = cantidad, fechaCultivo = now() 
         where id = parcela;
@@ -95,10 +95,10 @@ begin
 
     IF productoACosechar IS NULL THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Este parcela no existe';
-        insert into registros (fechaRegistro, mensaje) values (now(), "Se intento acceder a una parcela que no existe")
+        insert into registros (fechaRegistro, mensaje) values (now(), "Se intento acceder a una parcela que no existe");
     ELSEIF productoACosechar <> 0 THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Este parcela no está vacía';
-        insert into registros (fechaRegistro, mensaje) values (now(), "Se intento cosechar una parcela que esta vacia")
+        insert into registros (fechaRegistro, mensaje) values (now(), "Se intento cosechar una parcela que esta vacia");
     ELSE
         update parcelas set idProducto =  0, cantidad = 0 where id = parcela;
         insert into cosecha (idParcela, idEmpleado, idMaquinaria, cantidad) values (parcela, empleado, maquinaria, cantidad);

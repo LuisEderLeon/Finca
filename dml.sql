@@ -74,7 +74,7 @@ INSERT INTO alimentos (nombre, precio, stock) VALUES
 ('Verduras', 7.50, 110),
 ('Alfalfa', 14.00, 70),
 ('Zanahorias', 6.00, 130),
-('Peces pequeños', 25.00, 40),
+('Peces pequeños', 25.00, 10),
 ('Insectos', 30.00, 60),
 ('Soja', 16.00, 100),
 ('Cebada', 11.50, 140),
@@ -93,7 +93,7 @@ INSERT INTO alimentos (nombre, precio, stock) VALUES
 ('Proteína de soja', 23.00, 70),
 ('Trozos de carne', 35.00, 30),
 ('Harina de hueso', 20.00, 50),
-('Miel para abejas', 50.00, 20);
+('Miel para abejas', 50.00, 10);
 
 INSERT INTO especies (nombre) VALUES
 ('Vaca'),

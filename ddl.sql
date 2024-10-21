@@ -202,3 +202,10 @@ CREATE TABLE registros (
     fechaRegistro DATETIME,
     mensaje varchar(50)
 );
+
+
+CREATE TABLE alertas (
+    id int primary key auto_increment,
+    mensaje varchar(100),
+    fecha datetime
+)

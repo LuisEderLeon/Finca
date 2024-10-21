@@ -22,7 +22,7 @@ END //
 
 -- 3
 CREATE TRIGGER subtotalCompraMaquinaria
-BEFORE INSERT ON compramaquinaria
+BEFORE INSERT ON compraMaquinaria
 FOR EACH ROW
 BEGIN
     DECLARE precioMaquinaria DOUBLE;
@@ -33,11 +33,11 @@ END //
 -- 4
 
 CREATE TRIGGER totalComprasMaquinaria
-AFTER INSERT ON compramaquinaria
+AFTER INSERT ON compraMaquinaria
 FOR EACH ROW
 BEGIN
     DECLARE subtotalTemporal DOUBLE;
-    SELECT subtotal INTO subtotalTemporal FROM compramaquinaria WHERE idCompra = new.idCompra AND idMaquinaria = new.idMaquinaria;
+    SELECT subtotal INTO subtotalTemporal FROM compraMaquinaria WHERE idCompra = new.idCompra AND idMaquinaria = new.idMaquinaria;
     UPDATE compras SET total = subtotalTemporal + total WHERE id = new.idCompra;
 END //
 
