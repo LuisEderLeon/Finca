@@ -54,7 +54,7 @@ CREATE PROCEDURE matarAnimal (
     UPDATE animales SET estadoSalud = 'muerto' WHERE id = animal;
 END //
 
--- 2
+-- 2 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 create procedure cultivar (
     in producto int,
     in parcela int,
