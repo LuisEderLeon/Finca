@@ -39,8 +39,8 @@ BEGIN
     DECLARE existeVenta INT;
     declare estadoProducto varchar(50);
 
-    SELECT idProducto INTO productoCultivado FROM cultivos WHERE id = new.idCultivo;
-    select count(*) into existeVenta from inventarios where idProducto = productoCultivado and estado = "venta";
+    SELECT productoEnParcela(new.idParcela) INTO productoCultivado;
+    select productosEnVenta(productoCultivado) into existeVenta;
 
     if existeVenta = 0 then
         set estadoProducto = "venta";
@@ -62,7 +62,7 @@ BEGIN
     declare estadoProducto varchar(50);
     
     set productoProducido = new.idProducto;
-    select count(*) into existeVenta from inventarios where idProducto = productoProducido and estado = "venta";
+    select existenProductosAVender(productoCultivado) into existeVenta;
     if existeVenta = 0 then
         set estadoProducto = "venta";
     else
@@ -87,29 +87,23 @@ FOR EACH ROW
 BEGIN
     DECLARE stockDisponible INT;
     declare stockARestar int;
-    declare totalEnInventario int;
+    
     set stockARestar = new.cantidad;
-    SELECT cantidad INTO stockDisponible FROM inventarios 
-    WHERE idProducto = new.idProducto and estado = "venta";
-    
-    select sum(inventarios.cantidad) into totalEnInventario from inventarios
-    where idProducto = new.idProducto;
-    
-    if stockDisponible < totalEnInventario then
-        set new.cantidad = totalEnInventario;
-    end if;
+
+    SELECT stockALaVenta(new.idProducto) INTO stockDisponible;
     
     while stockDisponible < stockARestar do
         set stockARestar = stockARestar - stockDisponible;
         delete from inventarios where estado = "venta" and idProducto = new.idProducto;
         update inventarios set estado = "venta" where idProducto = new.idProducto 
         order by fechaIngreso limit 1;
-        SELECT cantidad INTO stockDisponible FROM inventarios 
-        WHERE idProducto = new.idProducto and estado = "venta";
+        SELECT stockALaVenta(new.idProducto) INTO stockDisponible;
     END while;
 
     if stockDisponible is null THEN
-        set new.cantidad = new.cantidad - totalEnInventarioockARestar;
+        set new.cantidad = new.cantidad - stockARestar;
+        insert into registros (fechaRegistro, mensaje) values
+        (now(), concat("No habian suficientes productos con id ",new.idProducto," para la venta ",new.idVenta));
     else 
         update inventarios set cantidad = cantidad - stockARestar 
         where estado = "venta" and idProducto = new.idProducto;
@@ -126,17 +120,17 @@ BEGIN
     set new.subtotal = new.cantidad * precioProducto;
 END //
 
+-- 9
 CREATE TRIGGER actualizarTotalVenta
 after INSERT ON detallesVenta
 FOR EACH ROW
 BEGIN
     declare subtotalProducto double;
-    select detallesventa.subtotal into subtotalProducto from detallesventa where detallesventa.idProducto = new.idProducto and detallesventa.idVenta = new.idProducto;
+    select detallesVenta.subtotal into subtotalProducto from detallesVenta where detallesVenta.idProducto = new.idProducto and detallesVenta.idVenta = new.idProducto;
     update ventas set total = total + subtotalProducto where id = new.idVenta;
 END //
 
-
--- 9
+-- 10
 CREATE TRIGGER aumentarComidaAnimalesEnfermos
 AFTER UPDATE ON animales
 FOR EACH ROW

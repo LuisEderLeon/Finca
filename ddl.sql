@@ -3,61 +3,63 @@ DROP DATABASE IF EXISTS mifinca;
 CREATE DATABASE mifinca;
 use mifinca;
 
-create table tiposProducto (
-    id int primary key auto_increment,
+CREATE TABLE tiposProducto (
+    id INT PRIMARY KEY,
     nombre varchar(50) unique
 );
 
-create table productos (
-    id int primary key auto_increment,
+CREATE TABLE productos (
+    id INT PRIMARY KEY,
     nombre varchar(50) unique,
     precio double,
-    idTipo int,
+    idTipo INT,
     unidades enum("kilogramos","litros","unidades"),
-    foreign key (idTipo) references tiposProducto (id)
+    FOREIGN KEY (idTipo) REFERENCES tiposProducto (id)
 );
 
-create table cultivos (
-    id int primary key auto_increment,
-    idProducto int,
+CREATE TABLE parcelas (
+    id INT PRIMARY KEY auto_increment,
+    idProducto INT not null,
+    cantidad INT,
     area double,
-    foreign key (idProducto) references productos (id)
+    fechaCultivo DATETIME,
+    FOREIGN KEY (idProducto) REFERENCES productos (id)
 );
 
-create table inventarios (
-    id int primary key auto_increment,
-    idProducto int,
+CREATE TABLE inventarios (
+    id INT PRIMARY KEY auto_increment,
+    idProducto INT,
     estado enum("stock","venta"),
-    fechaIngreso datetime,
-    cantidad int,
-    foreign key (idProducto) references productos (id)
+    fechaIngreso DATETIME,
+    cantidad INT,
+    FOREIGN KEY (idProducto) REFERENCES productos (id)
 );
 
-create table maquinarias (
-    id int primary key auto_increment,
+CREATE TABLE maquinarias (
+    id INT PRIMARY KEY auto_increment,
     marca varchar(50),
     modelo varchar(50),
     estado enum("stock","uso"),
-    fechaCompra datetime
+    fechaCompra DATETIME
 );
 
-create table funciones (
-    id int primary key auto_increment,
-    nombre varchar(50)unique
+CREATE TABLE funciones (
+    id INT PRIMARY KEY auto_increment,
+    nombre varchar(50) unique
 );
 
-create table empleados (
-    id int primary key auto_increment,
+CREATE TABLE empleados (
+    id INT PRIMARY KEY auto_increment,
     nombre varchar (50),
-    fechaNacimiento date,
-    idFuncion int,
+    fechaNacimiento DATE,
+    idFuncion INT,
     telefono varchar(20),
-    fechaContratacion date,
-    foreign key (idFuncion) references funciones (id)
+    fechaContratacion DATE,
+    FOREIGN KEY (idFuncion) REFERENCES funciones (id)
 );
 
-create table especies (
-    id int primary key auto_increment,
+CREATE TABLE especies (
+    id INT PRIMARY KEY auto_increment,
     nombre varchar(30) unique
 );
 
@@ -69,20 +71,20 @@ CREATE TABLE alimentos (
 );  
 
 CREATE TABLE especieAlimento (
-    idEspecie int,
-    idAlimento int,
-    foreign key (idEspecie) references especies (id),
-    foreign key (idAlimento) references alimentos (id)
+    idEspecie INT,
+    idAlimento INT,
+    FOREIGN KEY (idEspecie) REFERENCES especies (id),
+    FOREIGN KEY (idAlimento) REFERENCES alimentos (id)
 );
 
-create table animales (
-    id int primary key auto_increment,
-    idEspecie int,
-    fechaNacimiento datetime,
+CREATE TABLE animales (
+    id INT PRIMARY KEY auto_increment,
+    idEspecie INT,
+    fechaNacimiento DATETIME,
     precio double,
-    cantidadAlimento int,
+    cantidadAlimento INT,
     estadoSalud enum("saludable","enfermo","muerto"),
-    foreign key (idEspecie) references especies (id)
+    FOREIGN KEY (idEspecie) REFERENCES especies (id)
 );
 
 -----------------------------------------------------------------------------------
@@ -133,8 +135,8 @@ CREATE TABLE produccion (
     id INT AUTO_INCREMENT PRIMARY KEY,  
     idAnimal INT,
     idProducto INT,
-    idEmpleado int,
-    idMaquinaria int,
+    idEmpleado INT,
+    idMaquinaria INT,
     cantidad INT,
     FOREIGN KEY (idProducto) REFERENCES productos(id), 
     FOREIGN KEY (idEmpleado) REFERENCES empleados(id),
@@ -142,13 +144,24 @@ CREATE TABLE produccion (
     FOREIGN KEY (idMaquinaria) REFERENCES maquinarias(id)
 );
 
+CREATE TABLE cultivo (
+    id INT auto_increment PRIMARY key,
+    idParcela INT,
+    idEmpleado INT,
+    idMaquinaria INT,
+    cantidad INT,
+    FOREIGN KEY (idParcela) REFERENCES parcelas(id), 
+    FOREIGN KEY (idEmpleado) REFERENCES empleados(id),
+    FOREIGN KEY (idMaquinaria) REFERENCES maquinarias(id)
+);
+
 CREATE TABLE cosecha (
     id INT AUTO_INCREMENT PRIMARY KEY,  
-    idCultivo INT,
-    idEmpleado int,
-    idMaquinaria int,
+    idParcela INT,
+    idEmpleado INT,
+    idMaquinaria INT,
     cantidad INT,
-    FOREIGN KEY (idCultivo) REFERENCES cultivos(id), 
+    FOREIGN KEY (idParcela) REFERENCES parcelas(id), 
     FOREIGN KEY (idEmpleado) REFERENCES empleados(id),
     FOREIGN KEY (idMaquinaria) REFERENCES maquinarias(id)
 );
@@ -159,7 +172,7 @@ CREATE TABLE clientes(
     id INT PRIMARY KEY AUTO_INCREMENT,
     nombre varchar(100) NOT NULL,
     telefono char(10) NOT NULL,
-    fechaNacimiento date not null   
+    fechaNacimiento DATE not null   
 );
 
 CREATE TABLE ventas (
@@ -180,9 +193,8 @@ CREATE TABLE detallesVenta (
     FOREIGN KEY (idProducto) REFERENCES productos(id)
 );
 
-create table registros (
-    id int primary key auto_increment,
-    fechaRegistro datetime,
+CREATE TABLE registros (
+    id INT PRIMARY KEY auto_increment,
+    fechaRegistro DATETIME,
     mensaje varchar(50)
 );
-
