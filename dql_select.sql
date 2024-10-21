@@ -22,3 +22,17 @@ WHERE funciones.nombre = "Gestión de animales";
 
 -- 5
 select * from cosecha;
+
+insert into ventas(fecha,idCliente,total) values
+(curdate(),1,0);
+
+insert into detallesventa (idVenta,idProducto,cantidad,subtotal) VALUES
+(1,1,500,50);
+select * from cosecha;
+SELECT * FROM compraalimentos;
+select * from alimentos;
+select * from productos;
+select * from detallesventa;
+
+select * from compras;
+select * from compramaquinaria;
