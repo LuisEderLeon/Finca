@@ -21,6 +21,27 @@ BEGIN
 END //
 
 -- 3
+CREATE TRIGGER subtotalCompraMaquinaria
+BEFORE INSERT ON compramaquinaria
+FOR EACH ROW
+BEGIN
+    DECLARE precioMaquinaria DOUBLE;
+    SELECT maquinarias.precio INTO precioMaquinaria FROM maquinarias WHERE id = new.idMaquinaria;
+    SET new.subtotal = precioMaquinaria * new.cantidad;
+END //
+
+-- 4
+
+CREATE TRIGGER totalComprasMaquinaria
+AFTER INSERT ON compramaquinaria
+FOR EACH ROW
+BEGIN
+    DECLARE subtotalTemporal DOUBLE;
+    SELECT subtotal INTO subtotalTemporal FROM compramaquinaria WHERE idCompra = new.idCompra AND idMaquinaria = new.idMaquinaria;
+    UPDATE compras SET total = subtotalTemporal + total WHERE id = new.idCompra;
+END //
+
+-- 5
 CREATE TRIGGER totalComprasAnimales
 AFTER INSERT ON compraAnimales
 FOR EACH ROW
@@ -30,7 +51,7 @@ BEGIN
     UPDATE compras SET total = subtotalTemporal + total WHERE id = new.idCompra;
 END //
 
--- 4
+-- 6
 CREATE TRIGGER updateInventarioCosecha
 AFTER INSERT ON cosecha
 FOR EACH ROW
@@ -52,7 +73,7 @@ BEGIN
     (productoCultivado, estadoProducto, now(), new.cantidad);
 END //
 
--- 5
+-- 7
 CREATE TRIGGER updateInventarioProduccion
 AFTER INSERT ON produccion
 FOR EACH ROW
@@ -72,7 +93,7 @@ BEGIN
     (productoProducido, estadoProducto, now(), new.cantidad);
 END //
 
--- 6
+-- 8
 CREATE TRIGGER ajustarStockAlimentos
 AFTER INSERT ON compraAlimentos
 FOR EACH ROW
@@ -80,7 +101,15 @@ BEGIN
     UPDATE alimentos SET stock = stock + new.cantidad WHERE id = new.idAlimento;
 END //
 
--- 7
+-- 9
+CREATE TRIGGER ajustarStockMaquinaria
+AFTER INSERT ON compraMaquinaria
+FOR EACH ROW
+BEGIN
+    UPDATE maquinarias SET maquinarias.cantidad = cantidad + new.cantidad WHERE id = new.idMaquinaria;
+END //
+
+-- 10
 CREATE TRIGGER comprobarStockVenta
 before INSERT ON detallesVenta
 FOR EACH ROW
@@ -116,7 +145,7 @@ BEGIN
     end if;
 END //
 
--- 8
+-- 11
 CREATE TRIGGER actualizarSubtotalVentas
 before INSERT ON detallesVenta
 FOR EACH ROW
@@ -126,6 +155,7 @@ BEGIN
     set new.subtotal = new.cantidad * precioProducto;
 END //
 
+-- 12
 CREATE TRIGGER actualizarTotalVenta
 after INSERT ON detallesVenta
 FOR EACH ROW
@@ -136,7 +166,7 @@ BEGIN
 END //
 
 
--- 9
+-- 13
 CREATE TRIGGER aumentarComidaAnimalesEnfermos
 AFTER UPDATE ON animales
 FOR EACH ROW

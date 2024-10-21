@@ -38,6 +38,8 @@ create table maquinarias (
     marca varchar(50),
     modelo varchar(50),
     estado enum("stock","uso"),
+    cantidad int,
+    precio DOUBLE,
     fechaCompra datetime
 );
 
@@ -122,6 +124,8 @@ CREATE TABLE compraAlimentos (
 CREATE TABLE compraMaquinaria (
     idCompra INT,
     idMaquinaria INT,
+    cantidad INT,
+    subtotal double,
     PRIMARY KEY (idCompra, idMaquinaria),
     FOREIGN KEY (idCompra) REFERENCES compras(id),
     FOREIGN KEY (idMaquinaria) REFERENCES maquinarias(id)

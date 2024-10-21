@@ -23,3 +23,11 @@ insert into ventas(fecha,idCliente,total) values
 
 insert into detallesventa (idVenta,idProducto,cantidad,subtotal) VALUES
 (1,1,500,50);
+select * from cosecha;
+SELECT * FROM compraalimentos;
+select * from alimentos;
+select * from productos;
+select * from detallesventa;
+
+select * from compras;
+select * from compramaquinaria;
