@@ -11,7 +11,7 @@ INSERT INTO tiposProducto (id, nombre) VALUES
 (10,'Otros');
 
 INSERT INTO productos (id, nombre, precio, idTipo, unidades) VALUES
-(0, 'Vacio', 0.0, 0, 'unidades')
+(0, 'Vacio', 0.0, null, 'unidades'),
 (1, 'Aguacate', 3.50, 1, 'kilogramos'),
 (2, 'Maíz', 1.20, 1, 'kilogramos'),
 (3, 'Leche', 0.85, 3, 'litros'),
@@ -94,6 +94,17 @@ INSERT INTO alimentos (nombre, precio, stock) VALUES
 ('Trozos de carne', 35.00, 30),
 ('Harina de hueso', 20.00, 50),
 ('Miel para abejas', 50.00, 20);
+
+INSERT INTO especies (nombre) VALUES
+('Vaca'),
+('Oveja'),
+('Cabra'),
+('Pollo'),
+('Cerdo'),
+('Colmena de abejas'),
+('Pato'),
+('Conejo'),
+('Caballo');
 
 INSERT INTO especieAlimento (idEspecie, idAlimento) VALUES
 (1, 1),  -- Vaca - Pasto

@@ -90,7 +90,7 @@ create procedure cosechar (
     in cantidad int
 )
 begin
-   declare productoACosechar int;
+    declare productoACosechar int;
     SELECT productoEnParcela(parcela) INTO productoACosechar;
 
     IF productoACosechar IS NULL THEN

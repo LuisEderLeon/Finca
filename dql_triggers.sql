@@ -61,7 +61,7 @@ BEGIN
     declare estadoProducto varchar(50);
 
     SELECT productoEnParcela(new.idParcela) INTO productoCultivado;
-    select productosEnVenta(productoCultivado) into existeVenta;
+    select existenProductosAVender(productoCultivado) into existeVenta;
 
     if existeVenta = 0 then
         set estadoProducto = "venta";
@@ -83,7 +83,7 @@ BEGIN
     declare estadoProducto varchar(50);
     
     set productoProducido = new.idProducto;
-    select existenProductosAVender(productoCultivado) into existeVenta;
+    select existenProductosAVender(productoProducido) into existeVenta;
     if existeVenta = 0 then
         set estadoProducto = "venta";
     else
@@ -158,7 +158,6 @@ BEGIN
     select detallesVenta.subtotal into subtotalProducto from detallesVenta where detallesVenta.idProducto = new.idProducto and detallesVenta.idVenta = new.idProducto;
     update ventas set total = total + subtotalProducto where id = new.idVenta;
 END //
-
 
 -- 13
 CREATE TRIGGER aumentarComidaAnimalesEnfermos
