@@ -155,7 +155,7 @@ after INSERT ON detallesVenta
 FOR EACH ROW
 BEGIN
     declare subtotalProducto double;
-    select detallesVenta.subtotal into subtotalProducto from detallesVenta where detallesVenta.idProducto = new.idProducto and detallesVenta.idVenta = new.idProducto;
+    select detallesVenta.subtotal into subtotalProducto from detallesVenta where detallesVenta.idProducto = new.idProducto and detallesVenta.idVenta = new.idVenta;
     update ventas set total = total + subtotalProducto where id = new.idVenta;
 END //
 
