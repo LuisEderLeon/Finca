@@ -335,8 +335,6 @@ CREATE PROCEDURE totalVentasTiempoEspecifico (
     in cantidadTiempo int,
     out pTotalVentas double
 )
--- daniel necesito que pruebe el procedimiento 13
--- voy, que se supone debe hacer?
 begin
     declare pFechaFinal date;
     IF medicionTiempo = "dias" THEN

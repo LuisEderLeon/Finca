@@ -224,6 +224,7 @@ FOR EACH ROW
 BEGIN
     IF NEW.cantidad < 0 THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cantidad no valida para producir';
+    end if;
 END //
 
 DELIMITER ;
