@@ -4,7 +4,7 @@
 
 El proyecto **Finca lejana lejana pradera** es una base de datos diseñada para gestionar las operaciones agrícolas de una finca. Está optimizada para manejar la producción de productos agrícolas (aguacates, maíz, café, miel, leche, etc.), la gestión de empleados, maquinaria, ventas, inventarios, proveedores, clientes, y el manejo de animales como abejas y otros tipos de ganado y lo que estos producen.
 
-<img src="https://cdn.akamai.steamstatic.com/steam/apps/1657630/ss_5742b171daecef4062d51afe12abde32e886780b.1920x1080.jpg?t=1663866007" alt="Descripción de la imagen" width="300" height="200">
+<img src="https://cdn.akamai.steamstatic.com/steam/apps/1657630/ss_5742b171daecef4062d51afe12abde32e886780b.1920x1080.jpg?t=1663866007" alt="Descripción de la imagen" width="800">
 
 ### Objetivos 🚀
 - Facilitar el control de inventarios de productos.
