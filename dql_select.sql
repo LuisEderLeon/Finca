@@ -31,8 +31,10 @@ insert into detallesVenta (idVenta,idProducto,cantidad,subtotal) vAlues
 (1,3,50,50);
 SELECT * FROM inventarios;
 
-SELECT * FROM cosecha;
-SELECT * FROM compraAlimentos;
+
+
+SELECT * FROM registros;
+SELECT * FROM compras;
 SELECT * FROM alertas;
 SELECT * FROM ventas;
 SELECT * FROM detallesVenta;

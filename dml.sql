@@ -334,7 +334,7 @@ INSERT INTO compras (fecha, idProveedor, total) VALUES
 ('2023-02-16', 47, 0),
 ('2023-02-17', 48, 0),
 ('2023-02-18', 49, 0),
-('2023-02-19', 50, 0);
+('2024-10-19', 50, 0);
 
 INSERT INTO maquinarias (marca, modelo, estado, cantidad, precio, fechaCompra) VALUES
 ('John Deere', 'JD-5055E', 'uso', 2, 25000, '2021-03-15'),

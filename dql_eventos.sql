@@ -76,4 +76,48 @@ BEGIN
 END //
 
 -- 9
+CREATE EVENT notificarCumpleañosEmpleado
+ON SCHEDULE EVERY 1 DAY
+STARTS NOW() DO BEGIN
+    INSERT INTO alertas (fecha, mensaje)
+    SELECT NOW(), CONCAT('Hoy es el cumpleaños de: ', empleados.nombre)
+    FROM empleados
+    WHERE MONTH(empleados.fechaNacimiento) = MONTH(NOW()) AND DAY(fechaNacimiento) = DAY(NOW());
+END //
+
+-- 10
+CREATE EVENT borrarAlertasViejas
+ON SCHEDULE EVERY 1 MONTH
+STARTS NOW() 
+DO 
+BEGIN
+    DELETE FROM alertas
+    WHERE fecha < DATE_SUB(NOW(), INTERVAL 6 MONTH);
+END //
+
+-- 11
+CREATE EVENT registrarTotalComprasMensual
+ON SCHEDULE EVERY 1 MONTH
+STARTS NOW() 
+DO 
+BEGIN
+    INSERT INTO registros (fechaRegistro, mensaje)
+    SELECT NOW(), CONCAT('Total gastado en compras: ', SUM(total))
+    FROM compras
+    WHERE MONTH(NOW()) = MONTH(compras.fecha);
+END //
+
+-- 12
+CREATE EVENT registrarMantenimientosMensuales
+ON SCHEDULE EVERY 1 MONTH
+STARTS NOW() 
+DO 
+BEGIN
+    INSERT INTO registros (fechaRegistro, mensaje)
+    SELECT NOW(), CONCAT('Mantenimientos realizados: ', COUNT(*))
+    FROM mantenimiento
+    WHERE MONTH(mantenimiento.fechaInicio) = MONTH(NOW());
+END;
+
+
 DELIMITER ;
