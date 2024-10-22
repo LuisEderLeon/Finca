@@ -350,15 +350,25 @@ begin
 
     select sum(ventas.total) into pTotalVentas from ventas where ventas.fecha >= pfechaInicial and ventas.fecha <= pFechaFinal
 end //
-    Agregar Empleado: Inserta un nuevo empleado en la tabla empleados.
-    Actualizar Estado de Salud de Animal: Cambia el estado de salud de un animal específico.
-    Eliminar Cliente: Elimina un cliente de la tabla clientes, asegurando que no haya ventas asociadas.
-    Registrar Alimento Consumido por Animal: Inserta un registro de alimento consumido para un animal.
-    Generar Reporte de Inventario: Devuelve un reporte del inventario de productos y maquinarias.
-    Actualizar Datos del Proveedor: Modifica la información de un proveedor existente.
-    Registrar Cultivo: Inserta un nuevo registro de cultivo en la tabla cultivo.
-    Calcular Subtotal de Compra: Calcula el subtotal de una compra a partir de los alimentos adquiridos.
-    Consultar Productos por Tipo: Devuelve todos los productos de un tipo específico.
-    Registrar Alerta: Inserta un nuevo registro en la tabla alertas.
+
+-- 16 Actualizar Estado de Salud de Animal: Cambia el estado de salud de un animal específico.
+
+CREATE PROCEDURE cambiarEstadoSaludAnimal (
+    in pIdAnimal int,
+    in pEstadoSalud enum("saludable","enfermo","muerto")
+)
+begin
+    UPDATE animales set `estadoSalud` = pEstadoSalud where id = pIdAnimal;
+end //
+
+
+-- 16 Eliminar Cliente: Elimina un cliente de la tabla clientes, asegurando que no haya ventas asociadas.
+-- 16 Registrar Alimento Consumido por Animal: Inserta un registro de alimento consumido para un animal.
+-- 16 Generar Reporte de Inventario: Devuelve un reporte del inventario de productos y maquinarias.
+-- 16 Actualizar Datos del Proveedor: Modifica la información de un proveedor existente.
+-- 16 Registrar Cultivo: Inserta un nuevo registro de cultivo en la tabla cultivo.
+-- 16 Calcular Subtotal de Compra: Calcula el subtotal de una compra a partir de los alimentos adquiridos.
+-- 16 Consultar Productos por Tipo: Devuelve todos los productos de un tipo específico.
+-- 16 Registrar Alerta: Inserta un nuevo registro en la tabla alertas.
 
 delimiter ;
