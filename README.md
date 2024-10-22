@@ -1,4 +1,4 @@
-# Proyecto de Base de Datos Agrícola - Finca lejana lejana pradera
+# Proyecto de Base de Datos - Finca lejana lejana pradera
 
 ## Descripción del Proyecto 🎃
 
@@ -34,27 +34,25 @@ El proyecto **Finca lejana lejana pradera** es una base de datos diseñada para 
     mysql -u usuario -p < mifinca.sql
     ```
 
-## Uso 🪧💻
+## Orden de uso 🪧💻
 
 1. **Creación de la base de datos**:
-   Ejecuta el archivo SQL que contiene todas las tablas y las relaciones necesarias para comenzar a gestionar las operaciones agrícolas.
+   Ejecuta el archivo SQL que contiene todas las tablas y las relaciones necesarias para comenzar a gestionar las operaciones agrícolas. **ddl.sql**
    
-2. **Triggers**: 
+2. **Funciones**:
+   Ejecutar el archivo **dql_funciones.sql** que contiene las funciones ya que estas se usan en los siguientes archivos
+
+3. **Triggers**: 
    Los triggers automatizan la actualización de inventarios, la gestión de compras, ventas, producción y manejo de animales.
    
-3. **Eventos Periódicos**: 
+4. **procedimientos**:
+   Ejecutar procedimientos para realizar acciones de forma más sencillas
+
+5. **Inserciones**
+   Ejecutar archivo **dml.sql** para ingresar datos a las tablas ya creadas
+
+6. **Eventos Periódicos**: 
    La base de datos incluye eventos automatizados, como notificaciones de bajo stock, mantenimiento de maquinaria y registro de compras mensuales.
 
-4. **Consultas**:
-   - Consulta de stock de productos.
-   - Registro de ventas y compras.
-   - Generación de informes de producción y ventas.
-
-## Estructura de Carpetas
-
-```bash
-mifinca/
-│
-├── sql/               # Archivos SQL para creación de tablas y triggers
-├── events/            # Scripts para eventos periódicos
-└── README.md          # Documentación del proyecto
+7. **Consultas**:
+   - Ejecuta las consultas para acceder a distintos datos clave de la finca, donde puedes tomar decisiones basado en el contenido de las consultas
