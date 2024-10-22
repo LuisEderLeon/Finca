@@ -182,13 +182,16 @@ create procedure mantenimientoMaquinaria (
 ) begin
     if exists (select 1 from empleados where id = empleado)
     and exists (select 1 from maquinarias where id = maquinaria) then
-        insert into mantenimiento (idEmpleado, idMaquinaria,fechaInicio, fechaFin) values
-        (empleado, maquinaria, now(),date_add(now(), case
-            when unidades = "segundos" then interval duracion second
-            when unidades = "minutos" then interval duracion minute
-            when unidades = "horas" then interval duracion hour
-            when unidades = "dias" then interval duracion day 
-        end));
+        case
+            when unidades = "segundos" then insert into mantenimiento (idEmpleado, idMaquinaria,fechaInicio, fechaFin) values
+                (empleado, maquinaria, now(),date_add(now(), interval duracion second));
+            when unidades = "minutos" then insert into mantenimiento (idEmpleado, idMaquinaria,fechaInicio, fechaFin) values
+                (empleado, maquinaria, now(),date_add(now(), interval duracion minute));
+            when unidades = "horas" then insert into mantenimiento (idEmpleado, idMaquinaria,fechaInicio, fechaFin) values
+                (empleado, maquinaria, now(),date_add(now(), interval duracion hour));
+            when unidades = "dias" then insert into mantenimiento (idEmpleado, idMaquinaria,fechaInicio, fechaFin) values
+                (empleado, maquinaria, now(),date_add(now(), interval duracion day));
+        end case;
     else
         insert into registros (fechaRegistro, mensaje) values
         (now(),concat("Se intento hacer un mantenimiento con una maquinaria/empleado inexistente"));
@@ -346,7 +349,7 @@ begin
     END IF;
 
     if pTotalVentas<>0 then
-        select sum(ventas.total) into pTotalVentas from ventas where ventas.fecha >= pfechaInicial and ventas.fecha <= pFechaFinal
+        select sum(ventas.total) into pTotalVentas from ventas where ventas.fecha >= pfechaInicial and ventas.fecha <= pFechaFinal;
     end if;
 
 end //
@@ -366,18 +369,18 @@ CREATE PROCEDURE alimentosCantidadConsumidaAnimal (
     in pIdAniaml int
 )
 begin
-    declare idEspecie INT
+    declare idEspecie INT;
     SELECT especies.nombre, animales.cantidadAlimento
     from animales
     JOIN especies ON especies.idAnimal = animales.id
     join especieAlimento on especieAlimento.idEspecie = especies.id
-    join alimentos on alimentos.id = especieAlimento.idAlimento
+    join alimentos on alimentos.id = especieAlimento.idAlimento;
 end //
 
 -- 18 Generar Reporte de Inventario: Devuelve un reporte del inventario de productos y maquinarias.
 
 create procedure reporteInventario () begin
-    INSERT INTO registros (fechaRegistro, mensaje) values
+    INSERT INTO registros (fechaRegistro, mensaje)
     select now(), concat('El producto ',productos.nombre,' cuenta con un total de ',totalEnInventario(id),' ',productos.unidades,' en el inventario') from productos;
 end //
 

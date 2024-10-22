@@ -75,6 +75,16 @@ begin
 return (select TIMESTAMPDIFF(YEAR, empleados.fechaNacimiento, curdate()) from empleados where id = empleado);
 end //
 
+-- 10
+
+CREATE FUNCTION totalDiasDesdeContratacion(employeeId INT)
+RETURNS INT
+BEGIN
+    DECLARE totalDias INT;
+    SELECT DATEDIFF(CURDATE(), fechaContratacion) INTO totalDias FROM empleados WHERE id = employeeId;
+    RETURN totalDias;
+END;
+
 
 -- 11 Obtener el total de ventas de un cliente.
 CREATE FUNCTION totalVentaCliente (fIdCliente int) 
@@ -83,6 +93,25 @@ deterministic
 begin
     return(select sum(ventas.total) from ventas where ventas.idCliente = fIdCliente);
 end //
+
+-- 12 obtener promedio de los productos
+
+CREATE FUNCTION promedioProductos() RETURNS DOUBLE
+BEGIN 
+    DECLARE avgPrecio DOUBLE;
+    SELECT AVG(precio) INTO avgPrecio FROM productos;
+    RETURN avgPrecio;
+END;
+
+
+-- 13 total de animales comprados
+
+CREATE FUNCTION totalAnimalesComprados() RETURNS INT
+BEGIN
+    DECLARE totalComprados INT;
+    SELECT COUNT(*) INTO totalComprados FROM compraAnimales;
+    RETURN totalComprados;
+END;
 
 -- 14 Obtener el conteo de maquinaria activa.
 
