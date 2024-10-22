@@ -193,7 +193,7 @@ CREATE TABLE clientes(
 
 CREATE TABLE ventas (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    fecha DATE NOT NULL,
+    fecha DATETIME NOT NULL,
     idCliente INT NOT NULL,
     idEmpleado INT NOT NULL,
     total DOUBLE,

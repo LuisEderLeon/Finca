@@ -112,46 +112,38 @@ INSERT INTO especieAlimento (idEspecie, idAlimento) VALUES
 (1, 4),  -- Vaca - Maíz
 (1, 13), -- Vaca - Soja
 (1, 15), -- Vaca - Salvado
-
 (2, 1),  -- Oveja - Pasto
 (2, 2),  -- Oveja - Heno
 (2, 9),  -- Oveja - Alfalfa
 (2, 13), -- Oveja - Soja
 (2, 14), -- Oveja - Cebada
-
 (3, 1),  -- Cabra - Pasto
 (3, 2),  -- Cabra - Heno
 (3, 4),  -- Cabra - Maíz
 (3, 9),  -- Cabra - Alfalfa
 (3, 16), -- Cabra - Melaza
-
 (4, 3),  -- Pollo - Granos
 (4, 5),  -- Pollo - Avena
 (4, 11), -- Pollo - Peces pequeños
 (4, 12), -- Pollo - Insectos
 (4, 19), -- Pollo - Piensos compuestos
-
 (5, 3),  -- Cerdo - Granos
 (5, 4),  -- Cerdo - Maíz
 (5, 24), -- Cerdo - Remolacha
 (5, 27), -- Cerdo - Trozos de carne
 (5, 15), -- Cerdo - Salvado
-
 (6, 6),  -- Colmena de abejas - Néctar
 (6, 30), -- Colmena de abejas - Miel para abejas
-
 (7, 1),  -- Pato - Pasto
 (7, 11), -- Pato - Peces pequeños
 (7, 19), -- Pato - Piensos compuestos
 (7, 12), -- Pato - Insectos
 (7, 9),  -- Pato - Alfalfa
-
 (8, 7),  -- Conejo - Frutas
 (8, 8),  -- Conejo - Verduras
 (8, 9),  -- Conejo - Alfalfa
 (8, 18), -- Conejo - Hierbas frescas
 (8, 10), -- Conejo - Zanahorias
-
 (9, 1),  -- Caballo - Pasto
 (9, 2),  -- Caballo - Heno
 (9, 5),  -- Caballo - Avena
@@ -793,3 +785,7 @@ VALUES
 (48, 48, '2024-02-17 09:15:00', '2024-02-21 15:15:00'),
 (49, 49, '2024-02-18 10:30:00', '2024-02-22 16:30:00'),
 (50, 50, '2024-02-19 08:00:00', '2024-02-23 17:00:00');
+
+insert into ventas (fecha,idCliente,idEmpleado,total) values
+(now(),1,1,10)
+;

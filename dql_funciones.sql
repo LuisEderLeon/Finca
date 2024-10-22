@@ -61,3 +61,102 @@ DETERMINISTIC
 BEGIN
     RETURN (SELECT count(*) FROM tiposProducto  WHERE id = prodIdtipo);
 END //
+
+-- 8 Obtener el precio de un producto por ID.
+create function precioProducto (producto int)
+returns double DETERMINISTIC begin
+    return (select precio from productos where id = producto);
+end //
+
+-- 9 Obtener la edad de un empleado.
+create function edadEmpleado (empleado int)
+returns int DETERMINISTIC
+begin
+return (select TIMESTAMPDIFF(YEAR, empleados.fechaNacimiento, curdate()) from empleados where id = empleado);
+end //
+
+
+-- 11 Obtener el total de ventas de un cliente.
+CREATE FUNCTION totalVentaCliente (fIdCliente int) 
+returns double 
+deterministic
+begin
+    return(select sum(ventas.total) from ventas where ventas.idCliente = fIdCliente);
+end //
+
+-- 14 Obtener el conteo de maquinaria activa.
+
+create function conteoMaquinariasActivas ()
+returns int deterministic begin
+    return (select count(*) from maquinarias where estado = "uso");
+end //
+
+-- 15 Obtener el conteo de empleados en una función específica.
+
+
+create function conteoEmpleadosFuncion (funcion int)
+returns int deterministic 
+begin
+    return (select count(*) from empleados where idFuncion = funcion);
+end //
+
+-- 16 Obtener la fecha de la última venta registrada.
+
+create function fechaUltimaVentaRegistrada ()
+returns date deterministic 
+begin
+    return(select max(fecha) from ventas);
+end//
+
+-- 17 Calcular el ingreso total de las ventas.
+
+create function ingresoTotalVentas ()
+returns double deterministic 
+begin
+    return(select sum(ventas.total) from ventas);
+end//
+
+-- 18 Obtener el total de animales comprados de un proveedor.
+
+CREATE FUNCTION totalAnimalesProveedor(fIdProveedor INT)
+RETURNS INT DETERMINISTIC
+BEGIN
+    DECLARE total INT;
+
+    SELECT COUNT(animales.id) INTO total 
+    FROM compraAnimales 
+    JOIN compras ON compras.id = compraAnimales.idCompra 
+    WHERE compras.idProveedor = fIdProveedor;
+
+    RETURN total;
+END // 
+
+-- 19 Obtener el total de parcelas cultivadas por un empleado.
+
+CREATE FUNCTION totalParcelasCultivadasEmpleado(fIdEmpleado INT)
+RETURNS INT DETERMINISTIC
+BEGIN
+    DECLARE total INT;
+
+    SELECT COUNT(cultivo.idParcela) INTO total 
+    FROM cultivo 
+    WHERE idEmpleado = fIdEmpleado;
+
+    RETURN total;
+END // 
+
+-- 20 Obtener el conteo de mantenimientos de una maquinaria.
+
+CREATE FUNCTION conteoMantenimientoMaquinaria(fIdMaquinaria INT)
+RETURNS INT DETERMINISTIC
+BEGIN
+    DECLARE total INT;
+
+    SELECT COUNT(mantenimiento.idMaquinaria) INTO total 
+    FROM mantenimiento 
+    WHERE idMaquinaria = fIdMaquinaria;
+
+    RETURN total;
+END // 
+
+DELIMITER ;

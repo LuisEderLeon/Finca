@@ -1,3 +1,4 @@
+-- SQLBook: Code
 DELIMITER //
 
 -- 1
@@ -228,7 +229,7 @@ CREATE PROCEDURE eliminarProducto (
     in idProductoEliminar int
 )
 begin
-    declare contadour int
+    declare contadour int;
 
     SELECT COUNT(*) INTO contadour
     FROM detallesVenta
@@ -315,11 +316,8 @@ begin
     end while;
     delete from ventas where id = venta;
 end//
-    -- Crear Compra de Alimento: Registra una compra de alimentos y actualiza el stock.
-    -- Registrar Mantenimiento de Maquinaria: Inserta un nuevo registro de mantenimiento en mantenimiento.
-    -- Consultar Ventas por Fecha: Devuelve las ventas realizadas en un rango de fechas.
--- 14 Consultar Animales por Especie: Devuelve todos los animales de una especie específica. 
 
+-- 14 Consultar Animales por Especie: Devuelve todos los animales de una especie específica. 
 CREATE PROCEDURE consultarAnimalesPorEspecie (
     in pIdEspecie int
 )
@@ -345,10 +343,12 @@ begin
         SET pFechaFinal = DATE_ADD(p_fechaInicial, INTERVAL cantidadTiempo MONTH);
     ELSE
         SET pTotalVentas = 0; 
-        LEAVE
     END IF;
 
-    select sum(ventas.total) into pTotalVentas from ventas where ventas.fecha >= pfechaInicial and ventas.fecha <= pFechaFinal
+    if pTotalVentas<>0 then
+        select sum(ventas.total) into pTotalVentas from ventas where ventas.fecha >= pfechaInicial and ventas.fecha <= pFechaFinal
+    end if;
+
 end //
 
 -- 16 Actualizar Estado de Salud de Animal: Cambia el estado de salud de un animal específico.
@@ -361,14 +361,40 @@ begin
     UPDATE animales set `estadoSalud` = pEstadoSalud where id = pIdAnimal;
 end //
 
+-- 17 Registrar Alimento Consumido por Animal: Inserta un registro de alimento consumido para un animal.
+CREATE PROCEDURE alimentosCantidadConsumidaAnimal (
+    in pIdAniaml int
+)
+begin
+    declare idEspecie INT
+    SELECT especies.nombre, animales.cantidadAlimento
+    from animales
+    JOIN especies ON especies.idAnimal = animales.id
+    join especieAlimento on especieAlimento.idEspecie = especies.id
+    join alimentos on alimentos.id = especieAlimento.idAlimento
+end //
 
--- 16 Eliminar Cliente: Elimina un cliente de la tabla clientes, asegurando que no haya ventas asociadas.
--- 16 Registrar Alimento Consumido por Animal: Inserta un registro de alimento consumido para un animal.
--- 16 Generar Reporte de Inventario: Devuelve un reporte del inventario de productos y maquinarias.
--- 16 Actualizar Datos del Proveedor: Modifica la información de un proveedor existente.
--- 16 Registrar Cultivo: Inserta un nuevo registro de cultivo en la tabla cultivo.
--- 16 Calcular Subtotal de Compra: Calcula el subtotal de una compra a partir de los alimentos adquiridos.
--- 16 Consultar Productos por Tipo: Devuelve todos los productos de un tipo específico.
--- 16 Registrar Alerta: Inserta un nuevo registro en la tabla alertas.
+-- 18 Generar Reporte de Inventario: Devuelve un reporte del inventario de productos y maquinarias.
+
+create procedure reporteInventario () begin
+    INSERT INTO registros (fechaRegistro, mensaje) values
+    select now(), concat('El producto ',productos.nombre,' cuenta con un total de ',totalEnInventario(id),' ',productos.unidades,' en el inventario') from productos;
+end //
+
+-- 19 Actualizar Datos del Proveedor: Modifica la información de un proveedor existente.
+
+create procedure modificarProveedor (
+    in proveedor int,
+    in nombreNuevo varchar(50),
+    in telefonoNuevo varchar(15)
+) begin
+    update proveedores set nombre = nombreNuevo, telefono = telefonoNuevo where id = proveedor;
+end //
+
+-- 20 Consultar Productos por Tipo: Devuelve todos los productos de un tipo específico.
+
+create procedure productosPorTipo (in tipo int) begin
+    select * from productos where idTipo = tipo;
+end //
 
 delimiter ;
