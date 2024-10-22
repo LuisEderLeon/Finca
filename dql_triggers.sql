@@ -109,33 +109,17 @@ BEGIN
     UPDATE maquinarias SET maquinarias.cantidad = cantidad + new.cantidad WHERE id = new.idMaquinaria;
 END //
 
--- 10
+-- 10 y ahora? voy
 CREATE TRIGGER comprobarStockVenta
 BEFORE INSERT ON detallesVenta
 FOR EACH ROW
 BEGIN
     DECLARE stockDisponible INT;
-    DECLARE stockARestar INT;
-    
-    SET stockARestar = new.cantidad;
-
-    SELECT STOCKALAVENTA(new.idProducto) INTO stockDisponible;
-    
-    WHILE stockDisponible < stockARestar DO
-        SET stockARestar = stockARestar - stockDisponible;
-        DELETE FROM inventarios WHERE estado = "venta" AND idProducto = new.idProducto;
-        UPDATE inventarios SET estado = "venta" WHERE idProducto = new.idProducto 
-        ORDER BY fechaIngreso LIMIT 1;
-        SELECT STOCKALAVENTA(new.idProducto) INTO stockDisponible;
-    END WHILE;
-
-    IF stockDisponible IS NULL THEN
-        SET new.cantidad = new.cantidad - stockARestar;
+    select totalEnInventario(new.idProducto) into stockDisponible;
+    IF stockDisponible < new.cantidad THEN
+        SET new.cantidad = stockDisponible;
         INSERT INTO registros (fechaRegistro, mensaje) VALUES
         (NOW(), CONCAT("No habian suficientes productos con id ",new.idProducto," para la venta ",new.idVenta));
-    ELSE 
-        UPDATE inventarios SET cantidad = cantidad - stockARestar 
-        WHERE estado = "venta" AND idProducto = new.idProducto;
     END IF;
 END //
 
@@ -176,5 +160,70 @@ BEGIN
     END IF;
 END //
 
-DELIMITER ;
+-- 14
+CREATE TRIGGER registrarCambioPrecio
+AFTER UPDATE ON productos
+FOR EACH ROW
+BEGIN
+    insert into registros (fechaRegistro, mensaje) values
+    (NOW(), CONCAT("Se actualizó el precio del producto ", NEW.nombre, ": ", OLD.precio, " -> ", NEW.precio));
+END //
 
+-- 15
+create TRIGGER actualizarEstadoMaquinarias
+AFTER INSERT ON mantenimiento
+FOR EACH ROW
+BEGIN
+    update maquinarias set estado = "mantenimiento" where id = new.idMaquinaria;
+    insert into registros (fechaRegistro, mensaje) values
+    (now(),concat("Se puso la maquinaria ", new.idMaquinaria, " en mantenimiento por ", datediff(new.fechaFin,new.fechaInicio)," dias, ",timediff(new.fechaInicio,new.fechaFin)));
+end//
+
+-- 16
+create trigger verificarVentasPrducto
+BEFORE delete on productos
+FOR EACH ROW
+BEGIN
+    if exists (select 1 from detallesVenta where idProducto = old.id) then
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Este producto esta siendo utilizado en ventas';
+    end if;
+end //
+
+-- 17
+create trigger cambioEstadoAnimal
+AFTER update on animales
+FOR EACH ROW
+BEGIN
+    if new.estadoSalud <> old.estadoSalud then
+        insert into registros (fechaRegistro, mensaje) values
+        (now(),concat("El animal ",new.id," cambio su salud: ",new.estadoSalud, " -> ", old.estadoSalud));
+    end if;
+end //
+
+-- 18
+create trigger actualizarParcelasCultivadas
+AFTER INSERT ON cultivo
+FOR EACH ROW
+BEGIN
+    update parcelas set idProducto = new.idProducto, cantidad = new.cantidad, fechaCultivo = now() 
+    where id = new.idParcela;
+END //
+
+-- 19
+create trigger actualizarParcelasCosechadas
+AFTER INSERT ON cosecha
+FOR EACH ROW
+BEGIN
+    update parcelas set idProducto =  0, cantidad = 0 where id = new.idParcela;
+end //
+
+-- 20
+create trigger verificarCantidadProduccion
+BEFORE INSERT ON produccion
+FOR EACH ROW
+BEGIN
+    IF NEW.cantidad < 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cantidad no valida para producir';
+END //
+
+DELIMITER ;

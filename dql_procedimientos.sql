@@ -72,10 +72,10 @@ create procedure cultivar (
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Esta parcela no está vacía';
         insert into registros (fechaRegistro, mensaje) values (now(), "Se intento cultivar una parcela que no esta vacia");
     ELSE
-        update parcelas set idProducto =  producto, cantidad = cantidad, fechaCultivo = now() 
-        where id = parcela;
-        insert into cosecha (idParcela, idEmpleado, idMaquinaria, cantidad) values (parcela, empleado, maquinaria, cantidad);
-        insert into registros (fechaRegistro, mensaje) values (now(), concat("El empleado ", empleado, " cultivo el producto ", producto, " usando la maquina ", maquinaria, " en la parcela ",parcela));
+        insert into cultivo (idParcela, idEmpleado, idProducto, idMaquinaria, cantidad) values 
+        (parcela, empleado, producto, maquinaria, cantidad);
+        insert into registros (fechaRegistro, mensaje) values 
+        (now(), concat("El empleado ", empleado, " cultivo el producto ", producto, " usando la maquina ", maquinaria, " en la parcela ",parcela));
     END IF;
 end //
 
@@ -93,11 +93,10 @@ create procedure cosechar (
     IF productoACosechar IS NULL THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Este parcela no existe';
         insert into registros (fechaRegistro, mensaje) values (now(), "Se intento acceder a una parcela que no existe");
-    ELSEIF productoACosechar <> 0 THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Este parcela no está vacía';
+    ELSEIF productoACosechar = 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Este parcela está vacía';
         insert into registros (fechaRegistro, mensaje) values (now(), "Se intento cosechar una parcela que esta vacia");
     ELSE
-        update parcelas set idProducto =  0, cantidad = 0 where id = parcela;
         insert into cosecha (idParcela, idEmpleado, idMaquinaria, cantidad) values (parcela, empleado, maquinaria, cantidad);
         insert into registros (fechaRegistro, mensaje) values (now(), concat("El empleado ", empleado, " cosecho el producto ", producto, " usando la maquina ", maquinaria, " en la parcela ",parcela));
     end if;
@@ -181,18 +180,187 @@ create procedure mantenimientoMaquinaria (
     in unidades enum("segundos","minutos","horas","dias")
 ) begin
     if exists (select 1 from empleados where id = empleado)
-    and exists (select 1 from maquinaria where id = maquinaria) then
+    and exists (select 1 from maquinarias where id = maquinaria) then
         insert into mantenimiento (idEmpleado, idMaquinaria,fechaInicio, fechaFin) values
         (empleado, maquinaria, now(),date_add(now(), case
             when unidades = "segundos" then interval duracion second
             when unidades = "minutos" then interval duracion minute
             when unidades = "horas" then interval duracion hour
-            when unidades = "dias" then interval duracion day));
-        update maquinarias set estado = "mantenimiento" where id = maquinaria;
-            insert into registros (fechaRegistro, mensaje) values
-            (now(),concat("Se puso la maquinaria ", maquinaria, " en mantenimiento por ", duracion, " ",unidades));
+            when unidades = "dias" then interval duracion day 
+        end));
     else
         insert into registros (fechaRegistro, mensaje) values
         (now(),concat("Se intento hacer un mantenimiento con una maquinaria/empleado inexistente"));
     end if;
 end //
+
+-- 9
+create procedure actualizarPrecioProductos (
+    in producto int,
+    in nuevoPrecio double
+) begin
+    if exists (select 1 from productos where id = producto) then
+        update productos set precio = nuevoPrecio where id = producto;
+    else
+        insert into registros (fechaRegistro, mensaje) values
+        (now(),concat("Se intento actualizar el precio de un producto inexistente"));
+    end if;
+end //
+-- 10 Agregar Producto: Inserta un nuevo producto en la tabla productos.
+create procedure insertarProducto (
+    in prodNombre varchar(50),
+    in prodPrecio double,
+    in prodIdTipo int,
+    in prodUnidades enum("kilogramos","litros","unidades")
+) begin
+    if productoEnTipo(prodIdTipo) = 0 then
+        insert into registros (fechaRegistro, mensaje) values
+        (now(),concat("Se intento insertar un producto con tipo inexistente"));
+    else
+        INSERT INTO productos (nombre, precio, idTipo, unidades) 
+        VALUES (prodNombre, prodPrecio, prodIdTipo, prodUnidades);
+    end if;
+end //
+
+-- 11 Eliminar Producto: Elimina un producto de la base de datos, asegurando que no haya referencias en otras tablas.
+
+CREATE PROCEDURE eliminarProducto (
+    in idProductoEliminar int
+)
+begin
+    declare contadour int
+
+    SELECT COUNT(*) INTO contadour
+    FROM detallesVenta
+    WHERE idProducto = idProductoEliminar;
+
+    IF contadour > 0 THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'El producto no se puede eliminar porque está en uso en la tabla detallesVenta';
+    ELSE
+        SELECT COUNT(*) INTO contadour
+        FROM produccion
+        WHERE idProducto = idProductoEliminar;
+
+        IF contadour > 0 THEN
+            SIGNAL SQLSTATE '45000' 
+            SET MESSAGE_TEXT = 'El producto no se puede eliminar porque está en uso en la tabla produccion';
+        ELSE
+            SELECT COUNT(*) INTO contadour
+            FROM cultivo
+            WHERE idProducto = idProductoEliminar;
+            -- es para ver siquiere eliminar un prodducto, que no esté en las otras tablas y ahi si lo elimine
+            -- se que se podía hacer una funcion para re
+            IF contadour > 0 THEN
+                SIGNAL SQLSTATE '45000' 
+                SET MESSAGE_TEXT = 'El producto no se puede eliminar porque está en uso en la tabla cultivo';
+            ELSE
+                SELECT COUNT(*) INTO contadour
+                FROM parcelas
+                WHERE idProducto = idProductoEliminar;
+
+                IF contadour > 0 THEN
+                    SIGNAL SQLSTATE '45000' 
+                    SET MESSAGE_TEXT = 'El producto no se puede eliminar porque está en uso en la tabla parcelas';
+                ELSE
+                    -- si no hay eliminarlo
+                    DELETE FROM productos 
+                    WHERE id = idProductoEliminar;
+                END IF;
+            END IF;
+        END IF;
+    END IF;
+end //
+
+-- 12
+create procedure eliminarProductoVenta (
+    in producto int,
+    in venta int
+) begin
+    if exists (select 1 from detallesVenta where idVenta = venta and idProducto = producto) then
+        delete from detallesVenta where idProducto = producto and idVenta = venta;
+    else
+        insert into registros (fechaRegistro, mensaje) values
+        (now(),concat("Se intento eliminar un registro inexistente en detallesVenta"));
+    end if;
+end //
+
+
+-- 13 
+CREATE PROCEDURE completarVenta (
+    in venta int
+)
+begin
+    DECLARE stockDisponible INT;
+    DECLARE stockARestar INT;
+    DECLARE productoAVender INT;
+    
+    while exists (select 1 from detallesVenta where idVenta = venta) do
+        SELECT cantidad, idProducto INTO stockARestar, productoAVender FROM detallesVenta WHERE idVenta = venta LIMIT 1;
+        
+        SELECT stockALaVenta(productoAVender) INTO stockDisponible;
+        
+        WHILE stockDisponible <= stockARestar DO
+            SET stockARestar = stockARestar - stockDisponible;
+            
+            DELETE FROM inventarios WHERE estado = "venta" AND idProducto = productoAVender;
+
+            UPDATE inventarios SET estado = "venta" WHERE idProducto = productoAVender
+            ORDER BY fechaIngreso LIMIT 1;
+
+            SELECT stockALaVenta(productoAVender) INTO stockDisponible;
+        END WHILE;
+        
+        DELETE FROM detallesVenta WHERE idVenta = venta AND idProducto = productoAVender;
+    end while;
+    delete from ventas where id = venta;
+end//
+    -- Crear Compra de Alimento: Registra una compra de alimentos y actualiza el stock.
+    -- Registrar Mantenimiento de Maquinaria: Inserta un nuevo registro de mantenimiento en mantenimiento.
+    -- Consultar Ventas por Fecha: Devuelve las ventas realizadas en un rango de fechas.
+-- 14 Consultar Animales por Especie: Devuelve todos los animales de una especie específica. 
+
+CREATE PROCEDURE consultarAnimalesPorEspecie (
+    in pIdEspecie int
+)
+begin
+    select especie.nombre, animales.* from animales join especie on especie.id = animales.idEspecie
+    WHERE animales.idEspecie = pIdEspecie;
+end //
+
+-- 15 Calcular Total Ventas: Suma el total de todas las ventas en un periodo determinado.
+CREATE PROCEDURE totalVentasTiempoEspecifico (
+    in pfechaInicial date,
+    in medicionTiempo enum("dias","semanas","meses"),
+    in cantidadTiempo int,
+    out pTotalVentas double
+)
+-- daniel necesito que pruebe el procedimiento 13
+-- voy, que se supone debe hacer?
+begin
+    declare pFechaFinal date;
+    IF medicionTiempo = "dias" THEN
+        SET pFechaFinal = DATE_ADD(p_fechaInicial, INTERVAL cantidadTiempo DAY);
+    ELSEIF medicionTiempo = "semanas" THEN
+        SET pFechaFinal = DATE_ADD(p_fechaInicial, INTERVAL cantidadTiempo WEEK);
+    ELSEIF medicionTiempo = "meses" THEN
+        SET pFechaFinal = DATE_ADD(p_fechaInicial, INTERVAL cantidadTiempo MONTH);
+    ELSE
+        SET pTotalVentas = 0; 
+        LEAVE
+    END IF;
+
+    select sum(ventas.total) into pTotalVentas from ventas where ventas.fecha >= pfechaInicial and ventas.fecha <= pFechaFinal
+end //
+    Agregar Empleado: Inserta un nuevo empleado en la tabla empleados.
+    Actualizar Estado de Salud de Animal: Cambia el estado de salud de un animal específico.
+    Eliminar Cliente: Elimina un cliente de la tabla clientes, asegurando que no haya ventas asociadas.
+    Registrar Alimento Consumido por Animal: Inserta un registro de alimento consumido para un animal.
+    Generar Reporte de Inventario: Devuelve un reporte del inventario de productos y maquinarias.
+    Actualizar Datos del Proveedor: Modifica la información de un proveedor existente.
+    Registrar Cultivo: Inserta un nuevo registro de cultivo en la tabla cultivo.
+    Calcular Subtotal de Compra: Calcula el subtotal de una compra a partir de los alimentos adquiridos.
+    Consultar Productos por Tipo: Devuelve todos los productos de un tipo específico.
+    Registrar Alerta: Inserta un nuevo registro en la tabla alertas.
+
+delimiter ;

@@ -152,10 +152,12 @@ CREATE TABLE cultivo (
     id INT auto_increment PRIMARY key,
     idParcela INT,
     idEmpleado INT,
+    idProducto INT,
     idMaquinaria INT,
     cantidad INT,
     FOREIGN KEY (idParcela) REFERENCES parcelas(id), 
     FOREIGN KEY (idEmpleado) REFERENCES empleados(id),
+    FOREIGN KEY (idProducto) REFERENCES productos(id),
     FOREIGN KEY (idMaquinaria) REFERENCES maquinarias(id)
 );
 

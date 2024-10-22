@@ -53,3 +53,11 @@ DETERMINISTIC
 BEGIN
     RETURN (select max(mantenimiento.fechaFin) from mantenimiento where mantenimiento.fechaFin < now() and mantenimiento.iDMaquinaria = idDeMaquinaria);
 END //
+
+-- 7 producto en tipo
+CREATE FUNCTION productoEnTipo (prodIdtipo INT)
+RETURNS INT
+DETERMINISTIC
+BEGIN
+    RETURN (SELECT count(*) FROM tiposProducto  WHERE id = prodIdtipo);
+END //
