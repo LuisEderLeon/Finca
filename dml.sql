@@ -790,6 +790,13 @@ insert into ventas (fecha,idCliente,idEmpleado,total) values
 (now(),1,1,10)
 ;
 
+insert into detallesventa (idVenta,idProducto,cantidad,subtotal) values
+(1,1,10,null),
+(1,2,5,null),
+(2,2,3,null),
+(3,3,11,null)
+;
+
 -- ventas 
 -- cosecha
 -- cultivo
@@ -815,4 +822,3 @@ call cosechar(13,   5,  8,  5,  1);
 call cosechar(14,   6,  8,  6,  8);
 call cosechar(15,   7,  11, 7,  9);
 call cosechar(16,   8,  11, 8,  10);
-call cosechar(17,   9,  14, 9,  2);

@@ -77,6 +77,7 @@ begin
     case
         when tipo = "empleados" then select TIMESTAMPDIFF(YEAR, empleados.fechaNacimiento, curdate()) into edad from empleados where id = idEdad;
         when tipo = "clientes" then select TIMESTAMPDIFF(YEAR, clientes.fechaNacimiento, curdate()) into edad from clientes where id = idEdad;
+    end case;
     return edad;
 end //
 
@@ -88,7 +89,7 @@ BEGIN
     DECLARE totalDias INT;
     SELECT DATEDIFF(CURDATE(), fechaContratacion) INTO totalDias FROM empleados WHERE id = employeeId;
     RETURN totalDias;
-END;
+END //
 
 
 -- 11 Obtener el total de ventas de un cliente.
