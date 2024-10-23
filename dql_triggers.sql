@@ -60,8 +60,8 @@ BEGIN
     DECLARE existeVenta INT;
     DECLARE estadoProducto VARCHAR(50);
 
-    SELECT PRODUCTOENPARCELA(new.idParcela) INTO productoCultivado;
-    SELECT EXISTENPRODUCTOSAVENDER(productoCultivado) INTO existeVenta;
+    SELECT productoEnParcela(new.idParcela) INTO productoCultivado;
+    SELECT existenProductosAVender(productoCultivado) INTO existeVenta;
 
     IF existeVenta = 0 THEN
         SET estadoProducto = "venta";
@@ -83,7 +83,7 @@ BEGIN
     DECLARE estadoProducto VARCHAR(50);
     
     SET productoProducido = new.idProducto;
-    SELECT EXISTENPRODUCTOSAVENDER(productoProducido) INTO existeVenta;
+    SELECT existenProductosAVender(productoProducido) INTO existeVenta;
     IF existeVenta = 0 THEN
         SET estadoProducto = "venta";
     ELSE

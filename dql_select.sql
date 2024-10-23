@@ -435,38 +435,75 @@ where empleados.id in (select em.id from empleados em where em.fechaContratacion
 
 -- 83. Obtener el total de ventas realizadas por cada cliente.
 
-
+SELECT 
+    empleados.nombre, 
+    (SELECT SUM(ventas.total) FROM ventas WHERE ventas.idEmpleado = empleados.id) AS total_ventas
+FROM 
+    empleados;
 
 -- 84. Mostrar animales que requieren más alimento que el promedio de alimento requerido.
+select animales.id, especies.nombre, fechaNacimiento, precio, cantidadAlimento, estadoSalud from animales
+join especies on especies.id = animales.idEspecie
+where cantidadAlimento > (select avg(cantidadAlimento) from animales)
+order by animales.id;
 
--- 85. Encontrar la maquinaria más cara.
+-- 85. Encontrar las maquinarias más caras.
+select id, marca, modelo, estado, cantidad, fechaCompra,precio from maquinarias 
+where precio = (select max(precio) from maquinarias);
 
 -- 86. Listar los empleados que tienen la misma función que el empleado con id 5.
 
+select empleados.nombre from empleados 
+where empleados.idFuncion = (select empleados.idFuncion from empleados where empleados.id = 5);
+
 -- 87. Obtener el nombre de los productos que no están en ninguna venta.
 
--- 88. Mostrar los alimentos que han sido comprados más veces.
+select prods.nombre
+from productos prods
+WHERE(select count(*) from productos
+	join detallesVenta on detallesVenta.idProducto = productos.id
+	where detallesVenta.idProducto = prods.id) = 0;
 
--- 89. Listar las parcelas que tienen cultivos con más de 100 unidades producidas.
+-- 88. Consultar el nombre del empleado que realizó la mayor cantidad de ventas:
 
--- 90. Obtener los proveedores que han suministrado más de una compra.
+SELECT empleados.nombre 
+FROM empleados 
+WHERE empleados.id = (SELECT ventas.idEmpleado FROM ventas GROUP BY ventas.idEmpleado ORDER BY SUM(ventas.total) DESC LIMIT 1);
 
--- 91. Encontrar la cantidad total de animales comprados en una fecha específica.
 
--- 92. Listar las especies que no tienen animales asociados.
+-- 89. Obtener el total de ventas de productos 'aguacate':
 
--- 93. Obtener el total de producción por empleado.
+SELECT SUM(detallesVenta.subtotal) 
+FROM detallesVenta 
+WHERE idProducto = (SELECT productos.id FROM productos WHERE productos.nombre = "Aguacate");
 
--- 94. Mostrar los detalles de la última compra de alimentos.
+-- 90. Listar las máquinas en mantenimiento actualmente:
 
--- 95. Encontrar el empleado que ha realizado más ventas.
+SELECT marca, modelo 
+FROM maquinarias 
+WHERE id IN (SELECT idMaquinaria FROM mantenimiento WHERE fechaFin IS NULL);
 
--- 96. Obtener las maquinarias que están en mantenimiento.
+-- 91. Mostrar las parcelas que cultivan productos con el mayor precio:
 
--- 97. Listar los productos que han sido vendidos al menos una vez.
+SELECT id, cantidad, area 
+FROM parcelas 
+WHERE idProducto = (SELECT id FROM productos ORDER BY precio DESC LIMIT 1);
 
--- 98. Encontrar la cantidad total de cultivos realizados por un empleado específico.
 
--- 99. Listar las alertas que han sido registradas por un mensaje específico.
+-- 92. Listar proveedores con compras mayores a $5000:
 
--- 100. Obtener el total de inventarios en estado "stock".
+-- 93. Obtener el alimento más caro para cada especie:
+
+-- 94. Obtener los detalles de la venta más reciente de un cliente:
+
+-- 95. Ver los animales alimentados con el alimento más barato:
+
+-- 96. Consultar los clientes que han comprado productos de más de 3 tipos diferentes:
+
+-- 97. Obtener el nombre del proveedor con más compras registradas:
+
+-- 98. Listar las parcelas que tienen más de 50 unidades de productos 'litros':
+
+-- 99. Consultar el total de animales 'vacas' en la finca:
+
+-- 100. Obtener las máquinas compradas por un proveedor específico:
