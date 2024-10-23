@@ -166,9 +166,9 @@ INSERT INTO animales (idEspecie, fechaNacimiento, precio, cantidadAlimento, esta
 (5, '2020-08-01', 300.00, 15, 'saludable'),
 (5, '2019-03-22', 290.00, 13, 'enfermo'),
 (5, '2021-11-12', 310.00, 12, 'saludable'),
-(6, '2023-05-17', 350.00, 10000, 'saludable'),
-(6, '2023-04-10', 340.00, 9500, 'enfermo'),
-(6, '2022-09-03', 330.00, 8000, 'saludable'),
+(6, '2023-05-17', 350.00, 10, 'saludable'),
+(6, '2023-04-10', 340.00, 9, 'enfermo'),
+(6, '2022-09-03', 330.00, 8, 'saludable'),
 (7, '2020-06-25', 370.00, 9, 'saludable'),
 (7, '2021-08-05', 360.00, 10, 'muerto'),
 (7, '2022-12-30', 380.00, 8, 'enfermo'),
@@ -196,9 +196,9 @@ INSERT INTO animales (idEspecie, fechaNacimiento, precio, cantidadAlimento, esta
 (5, '2022-03-05', 210.00, 11, 'enfermo'),
 (5, '2020-09-08', 215.00, 12, 'saludable'),
 (5, '2021-06-19', 220.00, 13, 'muerto'),
-(6, '2023-04-22', 225.00, 10500, 'saludable'),
-(6, '2022-10-12', 230.00, 9700, 'enfermo'),
-(6, '2020-05-16', 235.00, 9000, 'saludable'),
+(6, '2023-04-22', 225.00, 10, 'saludable'),
+(6, '2022-10-12', 230.00, 9, 'enfermo'),
+(6, '2020-05-16', 235.00, 9, 'saludable'),
 (7, '2020-05-16', 235.00, 9, 'saludable'),
 (7, '2020-05-16', 235.00, 8, 'saludable'),
 (5, '2022-03-05', 210.00, 11, 'saludable'),
@@ -307,26 +307,26 @@ INSERT INTO compras (fecha, idProveedor, total) VALUES
 ('2023-01-28', 28, 0),
 ('2023-01-29', 29, 0),
 ('2023-01-30', 30, 0),
-('2023-01-31', 31, 0),
-('2023-02-01', 32, 0),
-('2023-02-02', 33, 0),
-('2023-02-03', 34, 0),
-('2023-02-04', 35, 0),
+('2023-01-31', 1, 0),
+('2023-02-01', 2, 0),
+('2023-02-02', 3, 0),
+('2023-02-03', 4, 0),
+('2023-02-04', 5, 0),
 ('2023-02-05', 36, 0),
 ('2023-02-06', 37, 0),
 ('2023-02-07', 38, 0),
 ('2023-02-08', 39, 0),
 ('2023-02-09', 40, 0),
-('2023-02-10', 41, 0),
-('2023-02-11', 42, 0),
-('2023-02-12', 43, 0),
-('2023-02-13', 44, 0),
-('2023-02-14', 45, 0),
-('2023-02-15', 46, 0),
-('2023-02-16', 47, 0),
-('2023-02-17', 48, 0),
-('2023-02-18', 49, 0),
-('2024-10-19', 50, 0);
+('2023-02-10', 1, 0),
+('2023-02-11', 2, 0),
+('2023-02-12', 3, 0),
+('2023-02-13', 4, 0),
+('2023-02-14', 5, 0),
+('2023-02-15', 6, 0),
+('2023-02-16', 7, 0),
+('2023-02-17', 8, 0),
+('2023-02-18', 9, 0),
+('2024-10-19', 10, 0);
 
 INSERT INTO maquinarias (marca, modelo, estado, cantidad, precio, fechaCompra) VALUES
 ('John Deere', 'JD-5055E', 'uso', 2, 25000, '2021-03-15'),
@@ -560,7 +560,8 @@ INSERT INTO compraMaquinaria (idCompra, idMaquinaria, cantidad, subtotal) VALUES
 INSERT INTO funciones (nombre) VALUES
 ('Gestión de animales'),
 ('Gestión de cultivos'),
-('Gestión de maquinas');
+('Gestión de maquinas'),
+('Gestion de ventas');
 
 INSERT INTO empleados (nombre, fechaNacimiento, idFuncion, telefono, fechaContratacion) VALUES
 ('Juan Pérez', '1985-03-15', 1, '555-1234', '2020-01-10'),
@@ -692,7 +693,7 @@ INSERT INTO clientes (nombre, telefono, fechaNacimiento) VALUES
 ('Miguel Romero', '5567894321', '1988-09-19'),
 ('Sofía Méndez', '5587659876', '1989-04-27'),
 ('Daniel Herrera', '5511122334', '1991-02-11'),
-('Andrea Jiménez', '5534567890', '1983-10-22'),
+('Andrea Jiménez', '5534567890', '1983-10-23'),
 ('Ricardo López', '5522334455', '1993-05-07'),
 ('Clara Ríos', '5576543210', '1986-06-14'),
 ('Sergio Navarro', '5511223344', '1979-11-05'),
@@ -786,16 +787,7 @@ VALUES
 (49, 49, '2024-02-18 10:30:00', '2024-02-22 16:30:00'),
 (50, 50, '2024-02-19 08:00:00', '2024-02-23 17:00:00');
 
-insert into ventas (fecha,idCliente,idEmpleado,total) values
-(now(),1,1,10)
-;
 
-insert into detallesventa (idVenta,idProducto,cantidad,subtotal) values
-(1,1,10,null),
-(1,2,5,null),
-(2,2,3,null),
-(3,3,11,null)
-;
 
 -- ventas 
 -- cosecha
@@ -821,4 +813,4 @@ call cosechar(12,   4,  5,  4,  3);
 call cosechar(13,   5,  8,  5,  1);
 call cosechar(14,   6,  8,  6,  8);
 call cosechar(15,   7,  11, 7,  9);
-call cosechar(16,   8,  11, 8,  10);
+call cosechar(16,   1,  11, 8,  10);

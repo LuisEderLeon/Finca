@@ -1,4 +1,3 @@
--- SQLBook: Code
 DELIMITER //
 
 -- 1
@@ -210,6 +209,7 @@ create procedure actualizarPrecioProductos (
         (now(),concat("Se intento actualizar el precio de un producto inexistente"));
     end if;
 end //
+
 -- 10 Agregar Producto: Inserta un nuevo producto en la tabla productos.
 create procedure insertarProducto (
     in prodNombre varchar(50),

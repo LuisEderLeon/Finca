@@ -1,4 +1,3 @@
--- SQLBook: Code
 DELIMITER //
 
 -- 1

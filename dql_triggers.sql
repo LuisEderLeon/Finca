@@ -1,4 +1,3 @@
--- SQLBook: Code
 DELIMITER //
 -- 1
 CREATE TRIGGER subtotalCompraAlimentos
@@ -175,7 +174,7 @@ create TRIGGER actualizarEstadoMaquinarias
 AFTER INSERT ON mantenimiento
 FOR EACH ROW
 BEGIN
-    update maquinarias set estado = "mantenimiento" where id = new.idMaquinaria;
+    update maquinarias set estado = "mantenimiento" where id = new.idMaquinaria and new.fechaFin < now();
     insert into registros (fechaRegistro, mensaje) values
     (now(),concat("Se puso la maquinaria ", new.idMaquinaria, " en mantenimiento por ", datediff(new.fechaFin,new.fechaInicio)," dias, ",timediff(new.fechaInicio,new.fechaFin)));
 end//
