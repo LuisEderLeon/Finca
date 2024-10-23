@@ -789,3 +789,18 @@ VALUES
 insert into ventas (fecha,idCliente,idEmpleado,total) values
 (now(),1,1,10)
 ;
+
+-- ventas 
+-- cosecha
+-- cultivo
+-- detalles ventas  
+
+call cultivar(1,1,2,1,5);
+call cultivar(2,1,2,1,5);
+call cultivar(1,1,2,1,5);
+call cultivar(1,1,2,1,5);
+call cultivar(1,1,2,1,5);
+call cultivar(1,1,2,1,5);
+call cultivar(1,1,2,1,5);
+call cultivar(1,1,2,1,5);
+call cultivar(1,1,2,1,5);

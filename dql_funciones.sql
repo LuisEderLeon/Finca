@@ -78,7 +78,7 @@ end //
 -- 10
 
 CREATE FUNCTION totalDiasDesdeContratacion(employeeId INT)
-RETURNS INT
+RETURNS INT DETERMINISTIC
 BEGIN
     DECLARE totalDias INT;
     SELECT DATEDIFF(CURDATE(), fechaContratacion) INTO totalDias FROM empleados WHERE id = employeeId;
@@ -88,7 +88,7 @@ END;
 
 -- 11 Obtener el total de ventas de un cliente.
 CREATE FUNCTION totalVentaCliente (fIdCliente int) 
-returns double 
+returns double DETERMINISTIC
 deterministic
 begin
     return(select sum(ventas.total) from ventas where ventas.idCliente = fIdCliente);
@@ -96,7 +96,7 @@ end //
 
 -- 12 obtener promedio de los productos
 
-CREATE FUNCTION promedioProductos() RETURNS DOUBLE
+CREATE FUNCTION promedioProductos() RETURNS DOUBLE DETERMINISTIC
 BEGIN 
     DECLARE avgPrecio DOUBLE;
     SELECT AVG(precio) INTO avgPrecio FROM productos;
@@ -106,7 +106,7 @@ END;
 
 -- 13 total de animales comprados
 
-CREATE FUNCTION totalAnimalesComprados() RETURNS INT
+CREATE FUNCTION totalAnimalesComprados() RETURNS INT DETERMINISTIC
 BEGIN
     DECLARE totalComprados INT;
     SELECT COUNT(*) INTO totalComprados FROM compraAnimales;

@@ -17,6 +17,10 @@ SELECT * FROM empleados
 JOIN funciones on funciones.id = empleados.idFuncion
 WHERE funciones.nombre = "Gestión de animales";
 
+SELECT * FROM empleados
+JOIN funciones on funciones.id = empleados.idFuncion
+WHERE funciones.nombre = "Gestión de cultivos";
+
 -- 5
 SELECT * FROM cosecha;
 
