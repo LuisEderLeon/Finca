@@ -1,3 +1,4 @@
+-- SQLBook: Code
 DROP DATABASE IF EXISTS mifinca;
 
 CREATE DATABASE mifinca;

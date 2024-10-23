@@ -1,3 +1,4 @@
+-- SQLBook: Code
 INSERT INTO tiposProducto (id, nombre) VALUES
 (1, 'Agrícola'),
 (2, 'Ganadero'),
@@ -795,12 +796,24 @@ insert into ventas (fecha,idCliente,idEmpleado,total) values
 -- cultivo
 -- detalles ventas  
 
-call cultivar(1,1,2,1,5);
-call cultivar(2,1,2,1,5);
-call cultivar(1,1,2,1,5);
-call cultivar(1,1,2,1,5);
-call cultivar(1,1,2,1,5);
-call cultivar(1,1,2,1,5);
-call cultivar(1,1,2,1,5);
-call cultivar(1,1,2,1,5);
-call cultivar(1,1,2,1,5);
+call cultivar(1,    1,  2,  1,  5);
+call cultivar(2,    2,  2,  2,  6);
+call cultivar(11,   3,  5,  3,  2);
+call cultivar(12,   4,  5,  4,  3);
+call cultivar(13,   5,  8,  5,  1);
+call cultivar(14,   6,  8,  6,  8);
+call cultivar(15,   7,  11, 7,  9);
+call cultivar(16,   8,  11, 8,  10);
+call cultivar(17,   9,  14, 9,  2);
+
+-- cosechar
+
+call cosechar(1,    1,  2,  1,  5);
+call cosechar(2,    2,  2,  2,  6);
+call cosechar(11,   3,  5,  3,  2);
+call cosechar(12,   4,  5,  4,  3);
+call cosechar(13,   5,  8,  5,  1);
+call cosechar(14,   6,  8,  6,  8);
+call cosechar(15,   7,  11, 7,  9);
+call cosechar(16,   8,  11, 8,  10);
+call cosechar(17,   9,  14, 9,  2);

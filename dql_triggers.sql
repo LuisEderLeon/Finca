@@ -1,3 +1,4 @@
+-- SQLBook: Code
 DELIMITER //
 -- 1
 CREATE TRIGGER subtotalCompraAlimentos
