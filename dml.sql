@@ -1,4 +1,3 @@
--- SQLBook: Code
 INSERT INTO tiposProducto (id, nombre) VALUES
 (1, 'Agrícola'),
 (2, 'Ganadero'),

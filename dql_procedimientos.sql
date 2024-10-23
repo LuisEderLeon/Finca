@@ -254,7 +254,6 @@ begin
             FROM cultivo
             WHERE idProducto = idProductoEliminar;
             -- es para ver siquiere eliminar un prodducto, que no esté en las otras tablas y ahi si lo elimine
-            -- se que se podía hacer una funcion para re
             IF contadour > 0 THEN
                 SIGNAL SQLSTATE '45000' 
                 SET MESSAGE_TEXT = 'El producto no se puede eliminar porque está en uso en la tabla cultivo';
@@ -355,7 +354,6 @@ begin
 end //
 
 -- 16 Actualizar Estado de Salud de Animal: Cambia el estado de salud de un animal específico.
-
 CREATE PROCEDURE cambiarEstadoSaludAnimal (
     in pIdAnimal int,
     in pEstadoSalud enum("saludable","enfermo","muerto")
@@ -378,14 +376,12 @@ begin
 end //
 
 -- 18 Generar Reporte de Inventario: Devuelve un reporte del inventario de productos y maquinarias.
-
 create procedure reporteInventario () begin
     INSERT INTO registros (fechaRegistro, mensaje)
     select now(), concat('El producto ',productos.nombre,' cuenta con un total de ',totalEnInventario(id),' ',productos.unidades,' en el inventario') from productos;
 end //
 
 -- 19 Actualizar Datos del Proveedor: Modifica la información de un proveedor existente.
-
 create procedure modificarProveedor (
     in proveedor int,
     in nombreNuevo varchar(50),
@@ -395,7 +391,6 @@ create procedure modificarProveedor (
 end //
 
 -- 20 Consultar Productos por Tipo: Devuelve todos los productos de un tipo específico.
-
 create procedure productosPorTipo (in tipo int) begin
     select * from productos where idTipo = tipo;
 end //

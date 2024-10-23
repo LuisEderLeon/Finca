@@ -110,7 +110,7 @@ BEGIN
     UPDATE maquinarias SET maquinarias.cantidad = cantidad + new.cantidad WHERE id = new.idMaquinaria;
 END //
 
--- 10 y ahora? voy
+-- 10
 CREATE TRIGGER comprobarStockVenta
 BEFORE INSERT ON detallesVenta
 FOR EACH ROW
@@ -215,7 +215,7 @@ create trigger actualizarParcelasCosechadas
 AFTER INSERT ON cosecha
 FOR EACH ROW
 BEGIN
-    update parcelas set idProducto =  0, cantidad = 0 where id = new.idParcela;
+    update parcelas set idProducto =  0, cantidad = 0, fechaCultivo = now() where id = new.idParcela;
 end //
 
 -- 20

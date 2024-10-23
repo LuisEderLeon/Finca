@@ -60,7 +60,7 @@ CREATE FUNCTION productoEnTipo (prodIdtipo INT)
 RETURNS INT
 DETERMINISTIC
 BEGIN
-    RETURN (SELECT count(*) FROM tiposProducto  WHERE id = prodIdtipo);
+    RETURN (SELECT count(*) FROM tiposProducto WHERE id = prodIdtipo);
 END //
 
 -- 8 Obtener el precio de un producto por ID.
@@ -70,10 +70,14 @@ returns double DETERMINISTIC begin
 end //
 
 -- 9 Obtener la edad de un empleado.
-create function edadEmpleado (empleado int)
+create function consultarEdad (idEdad int, tipo enum("empleados","clientes"))
 returns int DETERMINISTIC
 begin
-return (select TIMESTAMPDIFF(YEAR, empleados.fechaNacimiento, curdate()) from empleados where id = empleado);
+    declare edad int;
+    case
+        when tipo = "empleados" then select TIMESTAMPDIFF(YEAR, empleados.fechaNacimiento, curdate()) into edad from empleados where id = idEdad;
+        when tipo = "clientes" then select TIMESTAMPDIFF(YEAR, clientes.fechaNacimiento, curdate()) into edad from clientes where id = idEdad;
+    return edad;
 end //
 
 -- 10
