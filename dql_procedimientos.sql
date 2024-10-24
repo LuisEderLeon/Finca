@@ -81,14 +81,14 @@ end //
 
 -- 3
 create procedure cosechar (
-    in producto int,
     in parcela int,
     in empleado int,
-    in maquinaria int,
-    in cantidad int
+    in maquinaria int
 ) begin
     declare productoACosechar int;
+    declare cantidadACosechar int;
     SELECT productoEnParcela(parcela) INTO productoACosechar;
+    select cantidad into cantidadACosechar from parcelas where id = parcela;
 
     IF productoACosechar IS NULL THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Este parcela no existe';
@@ -97,8 +97,8 @@ create procedure cosechar (
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Este parcela está vacía';
         insert into registros (fechaRegistro, mensaje) values (now(), "Se intento cosechar una parcela que esta vacia");
     ELSE
-        insert into cosecha (idParcela, idEmpleado, idMaquinaria, cantidad) values (parcela, empleado, maquinaria, cantidad);
-        insert into registros (fechaRegistro, mensaje) values (now(), concat("El empleado ", empleado, " cosecho el producto ", producto, " usando la maquina ", maquinaria, " en la parcela ",parcela));
+        insert into cosecha (idParcela, idEmpleado, idMaquinaria, cantidad) values (parcela, empleado, maquinaria, cantidadACosechar);
+        insert into registros (fechaRegistro, mensaje) values (now(), concat("El empleado ", empleado, " cosecho el producto ", productoACosechar, " usando la maquina ", maquinaria, " en la parcela ",parcela));
     end if;
 end //
 

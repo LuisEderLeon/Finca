@@ -93,7 +93,27 @@ INSERT INTO alimentos (nombre, precio, stock) VALUES
 ('Proteína de soja', 23.00, 70),
 ('Trozos de carne', 35.00, 30),
 ('Harina de hueso', 20.00, 50),
-('Miel para abejas', 50.00, 10);
+('Miel para abejas', 50.00, 10),
+('Sorgo', 15.50, 95),
+('Lentejas', 12.00, 110),
+('Frijoles', 10.00, 130),
+('Cacahuetes', 18.00, 60),
+('Semillas de calabaza', 22.00, 40),
+('Espinacas', 7.50, 150),
+('Col rizada', 9.00, 100),
+('Nabo', 5.50, 120),
+('Chícharos', 6.50, 140),
+('Guisantes', 8.00, 90),
+('Almendras', 35.00, 25),
+('Aceitunas', 15.00, 70),
+('Coco', 20.00, 50),
+('Pasta', 12.50, 80),
+('Yuca', 9.75, 110),
+('Mandioca', 8.00, 95),
+('Kiwis', 30.00, 30),
+('Pera', 14.00, 85),
+('Manzana', 16.50, 75),
+('Cereza', 25.00, 20);
 
 INSERT INTO especies (nombre) VALUES
 ('Vaca'),
@@ -616,71 +636,107 @@ INSERT INTO empleados (nombre, fechaNacimiento, idFuncion, telefono, fechaContra
 ('Antonio Pérez', '1982-02-17', 2, '555-3536', '2021-09-27');
 
 INSERT INTO produccion (idAnimal, idProducto, idEmpleado, idMaquinaria, cantidad) VALUES
-(1, 3, 12, 5, 7),
-(2, 4, 23, 10, 3),
-(7, 5, 34, 15, 15),
-(8, 25, 41, 20, 9),
-(31, 26, 19, 25, 12),
-(33, 41, 10, 30, 5),
-(37, 3, 27, 35, 18),
-(39, 4, 48, 40, 2),
-(1, 5, 15, 45, 10),
-(2, 25, 30, 50, 8),
-(7, 26, 11, 6, 4),
-(8, 41, 38, 7, 11),
-(31, 3, 29, 12, 14),
-(33, 4, 3, 18, 6),
-(37, 5, 20, 26, 17),
-(39, 25, 44, 34, 13),
-(1, 26, 7, 8, 1),
-(2, 41, 42, 22, 16),
-(7, 3, 25, 39, 19),
-(8, 4, 1, 46, 20),
-(10, 6, 5, 1, 3),
-(11, 6, 8, 2, 1),
-(19, 6, 15, 3, 4),
-(41, 6, 22, 4, 2),
-(42, 6, 25, 5, 5),
-(49, 6, 30, 6, 2),
-(50, 6, 35, 7, 1),
-(10, 6, 40, 8, 4),
-(11, 6, 45, 9, 3),
-(19, 6, 12, 10, 5),
-(41, 6, 14, 11, 1),
-(42, 6, 18, 12, 2),
-(49, 6, 20, 13, 3),
-(50, 6, 24, 14, 4),
-(10, 6, 26, 15, 5),
-(11, 6, 29, 16, 2),
-(19, 6, 31, 17, 1),
-(41, 6, 33, 18, 4),
-(42, 6, 37, 19, 3),
-(49, 6, 39, 20, 5);
+(12, 37, 8, 25, 6),
+(19, 1, 44, 18, 3),
+(3, 22, 15, 39, 9),
+(46, 11, 29, 4, 7),
+(27, 30, 33, 10, 5),
+(25, 45, 2, 50, 1),
+(40, 19, 9, 23, 8),
+(15, 7, 6, 20, 4),
+(33, 3, 34, 17, 10),
+(5, 16, 12, 32, 2),
+(48, 38, 21, 36, 8),
+(24, 14, 49, 1, 3),
+(1, 41, 35, 11, 9),
+(34, 28, 13, 31, 6),
+(13, 2, 16, 22, 5),
+(4, 20, 25, 48, 7),
+(39, 5, 43, 14, 10),
+(22, 42, 37, 15, 1),
+(29, 6, 17, 26, 8),
+(7, 26, 40, 3, 4),
+(10, 23, 32, 24, 2),
+(31, 35, 30, 33, 9),
+(16, 47, 50, 19, 3),
+(9, 36, 10, 7, 5),
+(38, 8, 18, 12, 6),
+(50, 49, 45, 38, 4),
+(2, 15, 1, 27, 7),
+(18, 13, 39, 8, 10),
+(6, 20, 26, 46, 1),
+(14, 44, 11, 2, 9),
+(30, 17, 23, 34, 8),
+(35, 4, 28, 5, 2),
+(8, 48, 3, 41, 10),
+(11, 9, 47, 45, 6),
+(36, 24, 33, 40, 5),
+(32, 25, 12, 30, 1),
+(43, 39, 14, 50, 7),
+(20, 34, 4, 13, 3),
+(26, 10, 22, 15, 9),
+(17, 46, 27, 9, 8),
+(45, 2, 19, 29, 2),
+(15, 37, 7, 6, 10),
+(41, 3, 5, 11, 4),
+(44, 18, 42, 23, 7),
+(28, 48, 49, 39, 1),
+(23, 38, 30, 44, 6),
+(39, 12, 20, 3, 8),
+(30, 14, 34, 10, 9),
+(2, 50, 25, 26, 5);
 
-INSERT INTO parcelas (idProducto, cantidad, area, fechaCultivo)
-VALUES
-(0, 0, 10.5, now()),
-(0, 0, 15.2, now()),
-(0, 0, 5.0, now()),
-(0, 0, 3.8, now()),
-(0, 0, 4.5, now()),
-(0, 0, 2.7, now()),
-(0, 0, 3.0, now()),
-(0, 0, 12.3, now()),
-(0, 0, 20.0, now()),
-(0, 0, 20.0, now()),
-(0, 0, 20.0, now()),
-(0, 0, 20.0, now()),
-(0, 0, 18.0, now()),
-(0, 0, 3.0, now()),
-(0, 0, 4.8, now()),
-(0, 0, 5.7, now()),
-(0, 0, 6.0, now()),
-(0, 0, 2.5, now()),
-(0, 0, 4.2, now()),
-(0, 0, 8.5, now()),
-(0, 0, 7.3, now()),
-(0, 0, 10.0, now());
+INSERT INTO parcelas (idProducto, cantidad, area, fechaCultivo) VALUES 
+(0, 0, 10.5, '2024-10-01'),
+(0, 0, 20.0, '2024-10-02'),
+(0, 0, 30.75, '2024-10-03'),
+(0, 0, 40.25, '2024-10-04'),
+(0, 0, 50.5, '2024-10-05'),
+(0, 0, 60.1, '2024-10-06'),
+(0, 0, 70.2, '2024-10-07'),
+(0, 0, 80.3, '2024-10-08'),
+(0, 0, 90.4, '2024-10-09'),
+(0, 0, 100.5, '2024-10-10'),
+(0, 0, 110.6, '2024-10-11'),
+(0, 0, 120.7, '2024-10-12'),
+(0, 0, 130.8, '2024-10-13'),
+(0, 0, 140.9, '2024-10-14'),
+(0, 0, 150.1, '2024-10-15'),
+(0, 0, 160.2, '2024-10-16'),
+(0, 0, 170.3, '2024-10-17'),
+(0, 0, 180.4, '2024-10-18'),
+(0, 0, 190.5, '2024-10-19'),
+(0, 0, 200.6, '2024-10-20'),
+(0, 0, 210.7, '2024-10-21'),
+(0, 0, 220.8, '2024-10-22'),
+(0, 0, 230.9, '2024-10-23'),
+(0, 0, 240.1, '2024-10-24'),
+(0, 0, 250.2, '2024-10-25'),
+(0, 0, 260.3, '2024-10-26'),
+(0, 0, 270.4, '2024-10-27'),
+(0, 0, 280.5, '2024-10-28'),
+(0, 0, 290.6, '2024-10-29'),
+(0, 0, 300.7, '2024-10-30'),
+(0, 0, 310.8, '2024-10-31'),
+(0, 0, 320.9, '2024-11-01'),
+(0, 0, 330.1, '2024-11-02'),
+(0, 0, 340.2, '2024-11-03'),
+(0, 0, 350.3, '2024-11-04'),
+(0, 0, 360.4, '2024-11-05'),
+(0, 0, 370.5, '2024-11-06'),
+(0, 0, 380.6, '2024-11-07'),
+(0, 0, 390.7, '2024-11-08'),
+(0, 0, 400.8, '2024-11-09'),
+(0, 0, 410.9, '2024-11-10'),
+(0, 0, 420.1, '2024-11-11'),
+(0, 0, 430.2, '2024-11-12'),
+(0, 0, 440.3, '2024-11-13'),
+(0, 0, 450.4, '2024-11-14'),
+(0, 0, 460.5, '2024-11-15'),
+(0, 0, 470.6, '2024-11-16'),
+(0, 0, 480.7, '2024-11-17'),
+(0, 0, 490.8, '2024-11-18'),
+(0, 0, 500.9, '2024-11-19');
 
 INSERT INTO clientes (nombre, telefono, fechaNacimiento) VALUES
 ('Carlos Martínez', '5512345678', '1980-05-12'),
@@ -788,33 +844,245 @@ VALUES
 (50, 50, '2024-02-19 08:00:00', '2024-02-23 17:00:00');
 
 -- ventas 
+CALL crearVentaNueva(5, 10);
+CALL crearVentaNueva(12, 3);
+CALL crearVentaNueva(25, 7);
+CALL crearVentaNueva(1, 14);
+CALL crearVentaNueva(18, 2);
+CALL crearVentaNueva(30, 11);
+CALL crearVentaNueva(8, 6);
+CALL crearVentaNueva(14, 1);
+CALL crearVentaNueva(20, 15);
+CALL crearVentaNueva(3, 4);
+CALL crearVentaNueva(27, 9);
+CALL crearVentaNueva(9, 5);
+CALL crearVentaNueva(22, 12);
+CALL crearVentaNueva(2, 8);
+CALL crearVentaNueva(16, 13);
+CALL crearVentaNueva(29, 6);
+CALL crearVentaNueva(4, 1);
+CALL crearVentaNueva(10, 15);
+CALL crearVentaNueva(24, 3);
+CALL crearVentaNueva(11, 7);
+CALL crearVentaNueva(15, 4);
+CALL crearVentaNueva(28, 10);
+CALL crearVentaNueva(6, 2);
+CALL crearVentaNueva(17, 12);
+CALL crearVentaNueva(13, 9);
+CALL crearVentaNueva(19, 5);
+CALL crearVentaNueva(21, 8);
+CALL crearVentaNueva(30, 1);
+CALL crearVentaNueva(7, 14);
+CALL crearVentaNueva(26, 6);
+CALL crearVentaNueva(12, 2);
+CALL crearVentaNueva(4, 11);
+CALL crearVentaNueva(23, 3);
+CALL crearVentaNueva(9, 12);
+CALL crearVentaNueva(5, 7);
+CALL crearVentaNueva(15, 10);
+CALL crearVentaNueva(2, 6);
+CALL crearVentaNueva(18, 4);
+CALL crearVentaNueva(14, 8);
+CALL crearVentaNueva(3, 9);
+CALL crearVentaNueva(25, 2);
+CALL crearVentaNueva(11, 13);
+CALL crearVentaNueva(20, 7);
+CALL crearVentaNueva(1, 5);
+CALL crearVentaNueva(29, 12);
+CALL crearVentaNueva(6, 10);
+CALL crearVentaNueva(17, 3);
+CALL crearVentaNueva(10, 9);
+CALL crearVentaNueva(22, 1);
+CALL crearVentaNueva(28, 15);
 
+-- detalles ventas  
+CALL añadirProductosVenta(15, 23, 5);
+CALL añadirProductosVenta(1, 34, 2);
+CALL añadirProductosVenta(45, 10, 7);
+CALL añadirProductosVenta(22, 19, 3);
+CALL añadirProductosVenta(30, 25, 1);
+CALL añadirProductosVenta(12, 8, 10);
+CALL añadirProductosVenta(4, 42, 6);
+CALL añadirProductosVenta(35, 50, 4);
+CALL añadirProductosVenta(28, 14, 9);
+CALL añadirProductosVenta(9, 17, 5);
+CALL añadirProductosVenta(47, 3, 8);
+CALL añadirProductosVenta(26, 38, 1);
+CALL añadirProductosVenta(33, 12, 2);
+CALL añadirProductosVenta(7, 29, 6);
+CALL añadirProductosVenta(19, 5, 10);
+CALL añadirProductosVenta(44, 40, 3);
+CALL añadirProductosVenta(11, 20, 4);
+CALL añadirProductosVenta(23, 33, 7);
+CALL añadirProductosVenta(1, 48, 2);
+CALL añadirProductosVenta(36, 15, 8);
+CALL añadirProductosVenta(25, 24, 6);
+CALL añadirProductosVenta(14, 9, 5);
+CALL añadirProductosVenta(10, 21, 1);
+CALL añadirProductosVenta(39, 34, 3);
+CALL añadirProductosVenta(5, 32, 2);
+CALL añadirProductosVenta(3, 46, 9);
+CALL añadirProductosVenta(27, 37, 4);
+CALL añadirProductosVenta(50, 2, 10);
+CALL añadirProductosVenta(42, 18, 1);
+CALL añadirProductosVenta(16, 30, 7);
+CALL añadirProductosVenta(2, 45, 5);
+CALL añadirProductosVenta(20, 13, 6);
+CALL añadirProductosVenta(31, 22, 3);
+CALL añadirProductosVenta(8, 49, 4);
+CALL añadirProductosVenta(38, 11, 10);
+CALL añadirProductosVenta(43, 1, 2);
+CALL añadirProductosVenta(24, 26, 8);
+CALL añadirProductosVenta(6, 40, 5);
+CALL añadirProductosVenta(15, 35, 9);
+CALL añadirProductosVenta(32, 44, 2);
+CALL añadirProductosVenta(12, 3, 6);
+CALL añadirProductosVenta(29, 7, 10);
+CALL añadirProductosVenta(46, 39, 4);
+CALL añadirProductosVenta(4, 14, 1);
+CALL añadirProductosVenta(21, 20, 3);
+CALL añadirProductosVenta(48, 9, 7);
+CALL añadirProductosVenta(18, 36, 8);
+CALL añadirProductosVenta(11, 30, 5);
+CALL añadirProductosVenta(1, 17, 2);
+CALL añadirProductosVenta(14, 50, 10);
+CALL añadirProductosVenta(40, 13, 4);
+CALL añadirProductosVenta(33, 24, 3);
+CALL añadirProductosVenta(25, 19, 1);
+CALL añadirProductosVenta(5, 12, 6);
+CALL añadirProductosVenta(10, 46, 9);
+CALL añadirProductosVenta(39, 8, 7);
+CALL añadirProductosVenta(2, 31, 4);
+CALL añadirProductosVenta(20, 28, 1);
+CALL añadirProductosVenta(38, 15, 10);
+CALL añadirProductosVenta(44, 2, 3);
+CALL añadirProductosVenta(9, 49, 8);
+CALL añadirProductosVenta(45, 18, 5);
+CALL añadirProductosVenta(17, 36, 1);
+CALL añadirProductosVenta(26, 14, 7);
+CALL añadirProductosVenta(3, 11, 2);
+CALL añadirProductosVenta(41, 27, 6);
+CALL añadirProductosVenta(16, 4, 9);
+CALL añadirProductosVenta(50, 32, 10);
+CALL añadirProductosVenta(8, 19, 5);
+CALL añadirProductosVenta(12, 20, 3);
+CALL añadirProductosVenta(24, 38, 4);
+CALL añadirProductosVenta(30, 1, 2);
+CALL añadirProductosVenta(27, 22, 1);
+CALL añadirProductosVenta(35, 6, 10);
+CALL añadirProductosVenta(23, 45, 3);
+CALL añadirProductosVenta(14, 17, 8);
+CALL añadirProductosVenta(46, 9, 6);
+CALL añadirProductosVenta(18, 44, 4);
+CALL añadirProductosVenta(15, 3, 1);
+CALL añadirProductosVenta(40, 5, 7);
+CALL añadirProductosVenta(29, 36, 9);
+CALL añadirProductosVenta(11, 10, 2);
+CALL añadirProductosVenta(5, 34, 6);
+CALL añadirProductosVenta(3, 41, 10);
+CALL añadirProductosVenta(28, 8, 5);
+CALL añadirProductosVenta(32, 20, 4);
 
+-- cultivo
+CALL cultivar(5, 1, 23, 37, 4);
+CALL cultivar(14, 2, 45, 11, 6);
+CALL cultivar(28, 3, 12, 29, 3);
+CALL cultivar(9, 4, 31, 16, 8);
+CALL cultivar(36, 5, 18, 22, 7);
+CALL cultivar(1, 6, 34, 40, 10);
+CALL cultivar(19, 7, 50, 4, 2);
+CALL cultivar(27, 8, 10, 13, 9);
+CALL cultivar(33, 9, 8, 20, 1);
+CALL cultivar(48, 10, 30, 3, 5);
+CALL cultivar(17, 11, 46, 41, 6);
+CALL cultivar(39, 12, 25, 7, 8);
+CALL cultivar(8, 13, 14, 15, 4);
+CALL cultivar(21, 14, 44, 19, 10);
+CALL cultivar(12, 15, 26, 32, 2);
+CALL cultivar(47, 16, 35, 42, 7);
+CALL cultivar(2, 17, 3, 24, 9);
+CALL cultivar(30, 18, 11, 39, 5);
+CALL cultivar(3, 19, 38, 1, 8);
+CALL cultivar(44, 20, 15, 48, 1);
+CALL cultivar(11, 21, 9, 23, 6);
+CALL cultivar(38, 22, 20, 26, 3);
+CALL cultivar(15, 23, 7, 14, 2);
+CALL cultivar(26, 24, 5, 49, 10);
+CALL cultivar(40, 25, 29, 43, 4);
+CALL cultivar(24, 26, 33, 17, 8);
+CALL cultivar(50, 27, 39, 6, 9);
+CALL cultivar(18, 28, 4, 34, 1);
+CALL cultivar(7, 29, 22, 8, 5);
+CALL cultivar(34, 30, 45, 12, 3);
+CALL cultivar(20, 31, 10, 30, 2);
+CALL cultivar(13, 32, 16, 47, 6);
+CALL cultivar(29, 33, 28, 35, 7);
+CALL cultivar(4, 34, 41, 2, 10);
+CALL cultivar(35, 35, 1, 15, 8);
+CALL cultivar(10, 36, 48, 9, 5);
+CALL cultivar(6, 37, 17, 27, 9);
+CALL cultivar(25, 38, 3, 44, 2);
+CALL cultivar(39, 39, 19, 38, 10);
+CALL cultivar(22, 40, 30, 11, 1);
+CALL cultivar(32, 41, 14, 21, 8);
+CALL cultivar(45, 42, 12, 50, 4);
+CALL cultivar(16, 43, 24, 33, 6);
+CALL cultivar(43, 44, 49, 40, 7);
+CALL cultivar(23, 45, 2, 26, 3);
+CALL cultivar(41, 46, 34, 5, 9);
+CALL cultivar(15, 47, 46, 19, 10);
+CALL cultivar(37, 48, 8, 18, 5);
+CALL cultivar(2, 49, 25, 42, 4);
+CALL cultivar(30, 50, 6, 3, 1);
 
 -- cosecha
--- cultivo
--- detalles ventas  
-
-call cultivar(1,    1,  2,  1,  5);
-call cultivar(2,    2,  2,  2,  6);
-call cultivar(11,   3,  5,  3,  2);
-call cultivar(12,   4,  5,  4,  3);
-call cultivar(13,   5,  8,  5,  1);
-call cultivar(14,   6,  8,  6,  8);
-call cultivar(15,   7,  11, 7,  9);
-call cultivar(16,   8,  11, 8,  10);
-call cultivar(17,   9,  14, 9,  2);
-
--- cosechar
-
-call cosechar(1,    1,  2,  1,  5);
-call cosechar(2,    2,  2,  2,  6);
-call cosechar(11,   3,  5,  3,  2);
-call cosechar(12,   4,  5,  4,  3);
-call cosechar(13,   5,  8,  5,  1);
-call cosechar(14,   6,  8,  6,  8);
-call cosechar(15,   7,  11, 7,  9);
-call cosechar(16,   1,  11, 8,  10);
-
-
-call `crearVentaNueva`()
+CALL cosechar(1, 12, 45);
+CALL cosechar(2, 33, 8);
+CALL cosechar(3, 27, 19);
+CALL cosechar(4, 44, 30);
+CALL cosechar(5, 5, 50);
+CALL cosechar(6, 22, 14);
+CALL cosechar(7, 18, 37);
+CALL cosechar(8, 29, 3);
+CALL cosechar(9, 10, 25);
+CALL cosechar(10, 40, 2);
+CALL cosechar(11, 1, 36);
+CALL cosechar(12, 15, 43);
+CALL cosechar(13, 48, 11);
+CALL cosechar(14, 34, 9);
+CALL cosechar(15, 7, 20);
+CALL cosechar(16, 39, 26);
+CALL cosechar(17, 46, 13);
+CALL cosechar(18, 28, 4);
+CALL cosechar(19, 21, 32);
+CALL cosechar(20, 23, 17);
+CALL cosechar(21, 42, 24);
+CALL cosechar(22, 35, 6);
+CALL cosechar(23, 49, 41);
+CALL cosechar(24, 8, 47);
+CALL cosechar(25, 20, 12);
+CALL cosechar(26, 3, 38);
+CALL cosechar(27, 25, 15);
+CALL cosechar(28, 14, 1);
+CALL cosechar(29, 30, 39);
+CALL cosechar(30, 26, 16);
+CALL cosechar(31, 50, 11);
+CALL cosechar(32, 4, 22);
+CALL cosechar(33, 2, 33);
+CALL cosechar(34, 5, 29);
+CALL cosechar(35, 36, 44);
+CALL cosechar(36, 7, 10);
+CALL cosechar(37, 13, 24);
+CALL cosechar(38, 9, 46);
+CALL cosechar(39, 41, 3);
+CALL cosechar(40, 19, 48);
+CALL cosechar(41, 17, 8);
+CALL cosechar(42, 12, 34);
+CALL cosechar(43, 31, 27);
+CALL cosechar(44, 14, 50);
+CALL cosechar(45, 38, 18);
+CALL cosechar(46, 15, 40);
+CALL cosechar(47, 28, 26);
+CALL cosechar(48, 45, 2);
+CALL cosechar(49, 39, 36);
+CALL cosechar(50, 11, 23);
