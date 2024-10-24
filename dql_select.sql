@@ -200,17 +200,12 @@ select ventas.*
 from ventas 
 where ventas.fecha BETWEEN "2024-10-1" and "2024-10-31";
 
--- 40. Obtener el estado de salud promedio de los animales. ------------------------------ subconsulta -----------------
--- mostrando solo el estado de salud
+-- 40. Mostrar los animales que no estàn en un estado de salud saludable
 
-SELECT estadoSalud
-FROM (
-    SELECT animales.`estadoSalud` , COUNT(*) AS cantidad
-    FROM animales
-    GROUP BY `estadoSalud`
-    ORDER BY cantidad DESC
-    limit 1
-) AS cantidadAnimalesEstado;
+SELECT animales.id, especies.nombre AS especie, animales.estadoSalud
+FROM animales
+JOIN especies ON animales.idEspecie = especies.id
+WHERE animales.estadoSalud != 'saludable';
 
 -- 41. Listar los tipos de alimentos y su costo.
 SELECT alimentos.nombre AS tipo_alimento, alimentos.precio AS costo
@@ -498,16 +493,91 @@ where compras.total > (select avg(compras.total) from compras);
 
 -- 93. Obtener el alimento más caro para cada especie:
 
+SELECT ea.idEspecie, especies.nombre,a.nombre AS alimentoMasCaro, a.precio
+FROM especieAlimento ea
+JOIN alimentos a ON ea.idAlimento = a.id
+JOIN especies on especies.id = ea.`idEspecie`
+WHERE a.precio = (
+    SELECT MAX(al.precio)
+    FROM especieAlimento eal
+    JOIN alimentos al ON eal.idAlimento = al.id
+    WHERE eal.idEspecie = ea.idEspecie
+);
+
 -- 94. Obtener los detalles de la venta más reciente de un cliente:
 
--- 95. Ver los animales alimentados con el alimento más barato:
+SELECT ventas.*, detallesVenta.idProducto, detallesVenta.cantidad, detallesVenta.subtotal
+FROM ventas
+JOIN detallesVenta ON ventas.id = detallesVenta.idVenta
+WHERE ventas.fecha = (
+    SELECT MAX(venta.fecha)
+    FROM ventas venta
+    WHERE venta.idCliente = ventas.idCliente
+);
 
--- 96. Consultar los clientes que han comprado productos de más de 3 tipos diferentes:
+-- 95. Obtener el nombre y teléfono de los clientes que han realizado una compra cuyo total es superior al promedio de todas las ventas:
 
--- 97. Obtener el nombre del proveedor con más compras registradas:
+SELECT clientes.nombre, clientes.telefono 
+FROM clientes 
+WHERE clientes.id IN (
+    SELECT ventas.idCliente 
+    FROM ventas 
+    WHERE ventas.total > (SELECT AVG(total) FROM ventas)
+);
 
--- 98. Listar las parcelas que tienen más de 50 unidades de productos 'litros':
+-- 96. Listar el nombre de los empleados que han manejado maquinaria que ha tenido mantenimiento en los últimos 252 días:
 
--- 99. Consultar el total de animales 'vacas' en la finca:
+SELECT nombre 
+FROM empleados 
+WHERE id IN (
+    SELECT idEmpleado 
+    FROM mantenimiento 
+    WHERE fechaInicio >= DATE_SUB(NOW(), INTERVAL 252 DAY)
+);
 
--- 100. Obtener las máquinas compradas por un proveedor específico:
+-- 97. Obtener el nombre y precio de los productos que están actualmente en inventario con estado 'venta' y cuya cantidad es mayor que el promedio de los productos en estado 'stock':
+SELECT nombre, precio 
+FROM productos 
+WHERE id IN (
+    SELECT idProducto 
+    FROM inventarios 
+    WHERE estado = 'venta' AND cantidad > (
+        SELECT AVG(cantidad) 
+        FROM inventarios 
+        WHERE estado = 'stock'
+    )
+);
+
+-- 98. Mostrar el nombre de las parcelas donde se cultiva más de una cantidad promedio comparado con el resto de parcelas:
+
+SELECT id, cantidad 
+FROM parcelas 
+WHERE cantidad > (
+    SELECT AVG(cantidad) 
+    FROM parcelas
+);
+
+-- 99. Listar los proveedores que han suministrado animales que actualmente tienen un estado de salud 'enfermo' o 'muerto':
+
+SELECT nombre 
+FROM proveedores 
+WHERE id IN (
+    SELECT compras.idProveedor 
+    FROM compras
+    JOIN compraAnimales ON compras.id = compraAnimales.idCompra
+    JOIN animales ON compraAnimales.idAnimal = animales.id
+    WHERE animales.estadoSalud IN ('enfermo', 'muerto')
+);
+
+-- *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+-- 100. Obtener el estado de salud promedio de los animales. mostrando solo el estado de salud
+-- *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+
+SELECT estadoSalud
+FROM (
+    SELECT animales.`estadoSalud` , COUNT(*) AS cantidad
+    FROM animales
+    GROUP BY `estadoSalud`
+    ORDER BY cantidad DESC
+    limit 1
+) AS cantidadAnimalesEstado;
