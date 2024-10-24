@@ -124,64 +124,64 @@ Obtiene el número de mantenimientos realizados en una maquinaria específica. R
 
 ### Procedimientos
 
-### 1. "procesarAnimalSacrificio"
+### 1. `procesarAnimalSacrificio`
 Registra el sacrificio de un animal y sus productos derivados en la base de datos. Identifica la especie del animal y añade los productos relacionados, como carne y cuero, a la tabla de producción.
 
-### 2. "realizarCultivo"
+### 2. `realizarCultivo`
 Inserta un nuevo cultivo en la parcela indicada. Verifica que la parcela esté vacía antes de proceder y registra la acción en la tabla de registros.
 
-### 3. "recolectarCosecha"
+### 3. `recolectarCosecha`
 Permite recolectar la cosecha de una parcela. Verifica que la parcela tenga un producto sembrado y registra la cantidad cosechada en la base de datos.
 
-### 4. "añadirProductoVenta"
+### 4. `añadirProductoVenta`
 Asocia un producto existente a una venta, asegurando que la cantidad y el producto sean válidos. Registra la acción en los registros del sistema.
 
-### 5. "generarVentaNueva"
+### 5. `generarVentaNueva`
 Crea una nueva venta en el sistema con los detalles del cliente y el empleado responsables. Si los datos son válidos, se inserta la venta y se registra el evento.
 
-### 6. "suprimirVenta"
+### 6. `suprimirVenta`
 Elimina una venta y sus detalles relacionados si la venta existe en la base de datos. También guarda un registro de la operación.
 
-### 7. "removerCliente"
+### 7. `removerCliente`
 Elimina un cliente si no tiene ventas asociadas. En caso contrario, se registra el intento fallido en la tabla de registros.
 
-### 8. "programarMantenimientoMaquinaria"
+### 8. `programarMantenimientoMaquinaria`
 Planifica un mantenimiento para una maquinaria específica durante una cantidad de tiempo determinada. Verifica que el empleado y la maquinaria existan antes de registrar el mantenimiento.
 
-### 9. "actualizarPrecioProducto"
+### 9. `actualizarPrecioProducto`
 Modifica el precio de un producto existente. Si el producto no se encuentra en la base de datos, se registra un intento fallido.
 
-### 10. "insertarNuevoProducto"
+### 10. `insertarNuevoProducto`
 Agrega un nuevo producto a la base de datos, asegurando que pertenezca a un tipo de producto existente antes de realizar la inserción.
 
-### 11. "eliminarProductoExistente"
+### 11. `eliminarProductoExistente`
 Borra un producto de la base de datos siempre y cuando no esté referenciado en otras tablas como detalles de venta, producción o cultivo.
 
-### 12. "retirarProductoDeVenta"
+### 12. `retirarProductoDeVenta`
 Elimina un producto de una venta específica, asegurándose de que la combinación producto-venta exista antes de proceder.
 
-### 13. "finalizarVenta"
+### 13. `finalizarVenta`
 Completa el proceso de venta, actualizando el inventario y eliminando los productos relacionados con la venta. Registra cada transacción en el sistema.
 
-### 14. "consultarAnimalesSegunEspecie"
+### 14. `consultarAnimalesSegunEspecie`
 Devuelve una lista de animales que pertenecen a una especie específica, uniendo la información de la tabla de animales y especies.
 
-### 15. "calcularVentasPorPeriodo"
+### 15. `calcularVentasPorPeriodo`
 Suma el total de ventas realizadas dentro de un periodo de tiempo específico, calculando la fecha final en función del tipo de intervalo (días, semanas o meses).
 
-### 16. "modificarEstadoSaludAnimal"
+### 16. `modificarEstadoSaludAnimal`
 Actualiza el estado de salud de un animal específico en la base de datos, permitiendo cambiar entre los estados “saludable”, “enfermo” o “muerto”.
 
-### 17. "registrarConsumoAlimentoAnimal"
+### 17. `registrarConsumoAlimentoAnimal`
 Inserta un registro sobre el consumo de alimento de un animal, vinculando la especie del animal con su alimento correspondiente.
 
-### 18. "generarInformeInventario"
+### 18. `generarInformeInventario`
 Produce un informe sobre el estado del inventario, mostrando la cantidad total disponible de cada producto en el sistema.
 
-### 19. "actualizarDatosProveedor"
+### 19. `actualizarDatosProveedor`
 Modifica la información de un proveedor existente, incluyendo su nombre y número de teléfono, en la tabla de proveedores.
 
-### 20. "consultarProductosPorCategoria"
+### 20. `consultarProductosPorCategoria`
 Devuelve todos los productos que pertenecen a un tipo específico, mostrando su información desde la tabla de productos.
 
 ### Triggers
