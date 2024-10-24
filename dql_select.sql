@@ -1,3 +1,4 @@
+-- SQLBook: Code
 use mifinca;
 
 -- 1. Listar todos los productos.
@@ -489,8 +490,11 @@ SELECT id, cantidad, area
 FROM parcelas 
 WHERE idProducto = (SELECT id FROM productos ORDER BY precio DESC LIMIT 1);
 
+-- 92. Listar compras a proveedores que sean mayor que el promedio:
 
--- 92. Listar proveedores con compras mayores a $5000:
+SELECT proveedores.nombre, compras.id, compras.total from proveedores
+join compras on compras.idProveedor = proveedores.id
+where compras.total > (select avg(compras.total) from compras);
 
 -- 93. Obtener el alimento más caro para cada especie:
 
